@@ -300,10 +300,41 @@ export default function BalloonCatch() {
             >
               Main Lagi!
             </button>
+            <button
+              onClick={() => setScreen(SCREEN.MENU)}
+              style={{
+                padding: '10px 24px',
+                fontSize: 'clamp(0.85rem, 2vw, 1rem)',
+                fontFamily: "'Quicksand', sans-serif",
+                fontWeight: 600,
+                color: '#5a7a8a',
+                background: 'rgba(255,255,255,0.7)',
+                borderRadius: 12,
+                border: '2px solid #c0d8e0',
+              }}
+            >
+              ← Kembali ke Menu
+            </button>
           </div>
         )}
       </div>
 
+      {feedback && (
+        <div style={{
+          padding: '8px 16px',
+          margin: '0 12px 4px',
+          background: feedback === 'correct' ? '#d4edda' : '#f8d7da',
+          borderLeft: `4px solid ${feedback === 'correct' ? '#28a745' : '#dc3545'}`,
+          borderRadius: 8,
+          fontFamily: "'Fredoka', sans-serif",
+          fontWeight: 600,
+          fontSize: 'clamp(0.85rem, 2vw, 1rem)',
+          color: feedback === 'correct' ? '#155724' : '#721c24',
+          textAlign: 'left',
+        }}>
+          {feedback === 'correct' ? `KAMU HEBAT ${state.name}!` : `AYO ${state.name} KAMU BISA!`}
+        </div>
+      )}
       <OnScreenKeyboard onKeyPress={handleKey} pressedKey={pressedKey} />
     </div>
   )

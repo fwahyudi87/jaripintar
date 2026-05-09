@@ -1,6 +1,6 @@
 import { createContext, useContext, useReducer, useEffect, useCallback } from 'react'
 
-const SCREEN = { SPLASH: 'splash', LETTER_HUNT: 'letterHunt', BALLOON_CATCH: 'balloonCatch', KITE_CATCH: 'kiteCatch', ROCKET_CATCH: 'rocketCatch' }
+const SCREEN = { SPLASH: 'splash', MENU: 'menu', LETTER_HUNT: 'letterHunt', BALLOON_CATCH: 'balloonCatch', KITE_CATCH: 'kiteCatch', ROCKET_CATCH: 'rocketCatch' }
 const STORAGE_KEY = 'jaripintar_session'
 
 const initialState = {
@@ -27,7 +27,7 @@ function reducer(state, action) {
     case 'SET_PROFILE':
       return { ...state, name: action.payload.name, gender: action.payload.gender }
     case 'START_GAME':
-      return { ...state, screen: SCREEN.LETTER_HUNT }
+      return { ...state, screen: SCREEN.MENU }
     case 'ADD_SCORE':
       return { ...state, score: state.score + action.payload }
     case 'COMPLETE_MODULE1':

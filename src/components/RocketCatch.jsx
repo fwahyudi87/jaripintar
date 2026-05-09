@@ -7,7 +7,7 @@ import useLetterSound from '../hooks/useLetterSound.js'
 import useSoundFeedback from '../hooks/useSoundFeedback.js'
 
 const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-const ROCKET_SPEED = 0.35
+const ROCKET_SPEED = 0.2
 const SPAWN_INTERVAL = 2800
 const ROCKET_COUNT = 4
 const GAME_DURATION = 45000
@@ -197,7 +197,7 @@ export default function RocketCatch() {
               alignItems: 'center',
             }}
           >
-            <svg width="48" height="80" viewBox="0 0 48 80" fill="none">
+            <svg width="72" height="120" viewBox="0 0 48 80" fill="none">
               <polygon points="24,0 20,30 28,30" fill={r.color} />
               <rect x="18" y="30" width="12" height="28" rx="3" fill={r.color} />
               <rect x="18" y="30" width="12" height="28" rx="3" fill="url(#rocketShine)" opacity="0.3" />
@@ -263,10 +263,41 @@ export default function RocketCatch() {
             >
               Main Lagi!
             </button>
+            <button
+              onClick={() => setScreen(SCREEN.MENU)}
+              style={{
+                padding: '10px 24px',
+                fontSize: 'clamp(0.85rem, 2vw, 1rem)',
+                fontFamily: "'Quicksand', sans-serif",
+                fontWeight: 600,
+                color: '#5a7a8a',
+                background: 'rgba(255,255,255,0.7)',
+                borderRadius: 12,
+                border: '2px solid #c0d8e0',
+              }}
+            >
+              ← Kembali ke Menu
+            </button>
           </div>
         )}
       </div>
 
+      {feedback && (
+        <div style={{
+          padding: '8px 16px',
+          margin: '0 12px 4px',
+          background: feedback === 'correct' ? '#d4edda' : '#f8d7da',
+          borderLeft: `4px solid ${feedback === 'correct' ? '#28a745' : '#dc3545'}`,
+          borderRadius: 8,
+          fontFamily: "'Fredoka', sans-serif",
+          fontWeight: 600,
+          fontSize: 'clamp(0.85rem, 2vw, 1rem)',
+          color: feedback === 'correct' ? '#155724' : '#721c24',
+          textAlign: 'left',
+        }}>
+          {feedback === 'correct' ? `KAMU HEBAT ${state.name}!` : `AYO ${state.name} KAMU BISA!`}
+        </div>
+      )}
       <OnScreenKeyboard onKeyPress={handleKey} pressedKey={pressedKey} showNumbers />
     </div>
   )

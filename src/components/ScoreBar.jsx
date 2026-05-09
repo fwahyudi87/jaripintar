@@ -9,9 +9,23 @@ export default function ScoreBar({ name, gender, score, onBack }) {
       padding: '8px 16px',
       background: 'rgba(255,255,255,0.7)',
       borderBottom: '2px solid #e0ecf0',
-      gap: 8,
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
+      <button
+        onClick={onBack}
+        style={{
+          padding: '6px 10px',
+          fontSize: '1.2rem',
+          background: '#fff0f0',
+          borderRadius: 10,
+          border: '2px solid #ff6b6b',
+          color: '#ff6b6b',
+          lineHeight: 1,
+        }}
+      >
+        ←
+      </button>
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         <span style={{ fontSize: '1.3rem' }}>{avatar}</span>
         <span style={{
           fontSize: 'clamp(0.9rem, 2.5vw, 1.3rem)',
@@ -25,22 +39,6 @@ export default function ScoreBar({ name, gender, score, onBack }) {
         }}>
           {name}
         </span>
-        <button
-          onClick={onBack}
-          style={{
-            padding: '4px 12px',
-            fontSize: '0.8rem',
-            fontFamily: "'Quicksand', sans-serif",
-            fontWeight: 600,
-            color: '#5a7a8a',
-            background: 'rgba(255,255,255,0.5)',
-            borderRadius: 8,
-            border: '2px solid #c0d8e0',
-            marginLeft: 4,
-          }}
-        >
-          ←
-        </button>
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>

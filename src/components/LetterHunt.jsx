@@ -49,7 +49,7 @@ export default function LetterHunt() {
       if (roundRef.current >= TOTAL_ROUNDS) {
         setCompleted(true)
         completeModule1()
-        setTimeout(() => setScreen(SCREEN.BALLOON_CATCH), 1200)
+        setTimeout(() => setScreen(SCREEN.MENU), 1200)
         return
       }
 
@@ -183,11 +183,27 @@ export default function LetterHunt() {
             color: '#4caf50',
             fontWeight: 600,
           }}>
-            ✅ Mantap! Lanjut ke Balon!
+            ✅ Mantap! Kembali ke Menu...
           </p>
         )}
       </div>
 
+      {feedback && (
+        <div style={{
+          padding: '8px 16px',
+          margin: '0 12px 4px',
+          background: feedback === 'correct' ? '#d4edda' : '#f8d7da',
+          borderLeft: `4px solid ${feedback === 'correct' ? '#28a745' : '#dc3545'}`,
+          borderRadius: 8,
+          fontFamily: "'Fredoka', sans-serif",
+          fontWeight: 600,
+          fontSize: 'clamp(0.85rem, 2vw, 1rem)',
+          color: feedback === 'correct' ? '#155724' : '#721c24',
+          textAlign: 'left',
+        }}>
+          {feedback === 'correct' ? `KAMU HEBAT ${state.name}!` : `AYO ${state.name} KAMU BISA!`}
+        </div>
+      )}
       <OnScreenKeyboard onKeyPress={handleKey} pressedKey={pressedKey} showNumbers={isNumberPhase} />
 
       <style>{`

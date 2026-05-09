@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.1 (2026-05-10)
+
+- Halaman MenuScreen: 4 kartu modul (grid 2x2), modul terkunci tampil 🔒
+- Feedback banner: "KAMU HEBAT <nama>!" (hijau) / "AYO <nama> KAMU BISA!" (merah)
+- ScoreBar: tombol ← merah, avatar+nama di tengah
+- Fix routing MenuScreen (key mapping SCREEN constant)
+- Rocket: ukuran lebih besar (72x120), transisi lebih lambat (0.2)
+
 ## 0.4.0 (2026-05-10)
 
 - Audio feedback via Howler.js: chime (↑ C5→E5) saat benar, boop (↓ 300→100Hz) saat salah
