@@ -5,31 +5,42 @@ import ScoreBar from './ScoreBar.jsx'
 import useGameLoop from '../hooks/useGameLoop.js'
 import useLetterSound from '../hooks/useLetterSound.js'
 
-const NUMBERS = ['1','2','3','4','5','6','7','8','9','0']
-const KITE_SPEED = 0.25
-const SPAWN_INTERVAL = 2500
-const KITE_COUNT = 4
+const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+const ROCKET_SPEED = 0.35
+const SPAWN_INTERVAL = 2800
+const ROCKET_COUNT = 4
 const GAME_DURATION = 45000
-const KITE_COLORS = ['#ff6b6b', '#ff8c00', '#4ecdc4', '#a8d8ea', '#f9e79f', '#b8a9c9', '#e84393']
+const ROCKET_COLORS = ['#ff6b6b', '#ff8c00', '#4ecdc4', '#a8d8ea', '#b8a9c9', '#e84393']
 
-function randomNumber() {
-  return NUMBERS[Math.floor(Math.random() * NUMBERS.length)]
+function randomChar() {
+  return CHARS[Math.floor(Math.random() * CHARS.length)]
 }
 
-export default function KiteCatch() {
-  const { state, addScore, setScreen, SCREEN, unlockModule4, startModule4 } = useGame()
-  const [kites, setKites] = useState([])
+export default function RocketCatch() {
+  const { state, addScore, setScreen, SCREEN } = useGame()
+  const [rockets, setRockets] = useState([])
   const [pressedKey, setPressedKey] = useState(null)
   const [timeLeft, setTimeLeft] = useState(GAME_DURATION)
   const [gameOver, setGameOver] = useState(false)
   const [gameKey, setGameKey] = useState(0)
   const [feedback, setFeedback] = useState(null)
-  const [module4JustUnlocked, setModule4JustUnlocked] = useState(false)
   const confettiRef = useRef(null)
   const playSound = useLetterSound()
 
   const gameOverRef = useRef(false)
   gameOverRef.current = gameOver
+
+  const spawnRocket = useCallback(() => {
+    setRockets((prev) => {
+      if (prev.length >= ROCKET_COUNT) return prev
+      const char = randomChar()
+      const x = 10 + Math.random() * 60
+      const color = ROCKET_COLORS[Math.floor(Math.random() * ROCKET_COLORS.length)]
+      const id = Date.now() + Math.random()
+      const drift = (Math.random() - 0.5) * 0.15
+      return [...prev, { id, char, x, y: 100, color, drift }]
+    })
+  }, [])
 
   const handleKey = useCallback((key) => {
     if (gameOverRef.current) return
@@ -38,18 +49,18 @@ export default function KiteCatch() {
     playSound(key)
 
     let hit = false
-    setKites((prev) => {
-      const match = prev.find((k) => k.number === key)
+    setRockets((prev) => {
+      const match = prev.find((r) => r.char === key.toUpperCase())
       if (match) {
         hit = true
         spawnConfetti(match.x, match.y)
-        return prev.filter((k) => k.id !== match.id)
+        return prev.filter((r) => r.id !== match.id)
       }
       return prev
     })
 
     if (hit) {
-      addScore(15)
+      addScore(20)
       setFeedback('correct')
       setTimeout(() => setFeedback(null), 300)
     } else {
@@ -63,7 +74,7 @@ export default function KiteCatch() {
     const rect = confettiRef.current.getBoundingClientRect()
     const cx = rect.left + (x / 100) * rect.width
     const cy = rect.top + (y / 100) * rect.height
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 16; i++) {
       const p = document.createElement('div')
       p.style.cssText = `
         position: fixed;
@@ -74,34 +85,23 @@ export default function KiteCatch() {
         border-radius: 50%;
         pointer-events: none;
         z-index: 999;
-        transition: all 0.6s cubic-bezier(.25,.46,.45,.94);
+        transition: all 0.8s cubic-bezier(.25,.46,.45,.94);
       `
       document.body.appendChild(p)
       requestAnimationFrame(() => {
-        p.style.transform = `translate(${(Math.random() - 0.5) * 200}px, ${(Math.random() - 0.5) * 200}px)`
+        p.style.transform = `translate(${(Math.random() - 0.5) * 250}px, ${(Math.random() - 0.5) * 250}px)`
         p.style.opacity = '0'
       })
-      setTimeout(() => p.remove(), 700)
+      setTimeout(() => p.remove(), 900)
     }
   }
 
-  const spawnKite = useCallback(() => {
-    setKites((prev) => {
-      if (prev.length >= KITE_COUNT) return prev
-      const number = randomNumber()
-      const color = KITE_COLORS[Math.floor(Math.random() * KITE_COLORS.length)]
-      const id = Date.now() + Math.random()
-      const fromRight = Math.random() > 0.5
-      return [...prev, { id, number, x: fromRight ? 110 : -10, y: 20 + Math.random() * 50, color, fromRight }]
-    })
-  }, [])
-
   useEffect(() => {
-    spawnKite()
+    spawnRocket()
     const startTime = Date.now()
 
     const spawnTimer = setInterval(() => {
-      spawnKite()
+      spawnRocket()
     }, SPAWN_INTERVAL)
 
     const gameTimer = setInterval(() => {
@@ -119,30 +119,24 @@ export default function KiteCatch() {
       clearInterval(spawnTimer)
       clearInterval(gameTimer)
     }
-  }, [spawnKite, gameKey])
+  }, [spawnRocket, gameKey])
 
   useGameLoop(() => {
-    setKites((prev) => {
-      const next = prev.map((k) => ({
-        ...k,
-        x: k.fromRight ? k.x - KITE_SPEED : k.x + KITE_SPEED,
-        y: k.y + Math.sin(Date.now() / 800 + k.id) * 0.15,
-      })).filter((k) => k.x > -15 && k.x < 115)
+    setRockets((prev) => {
+      const next = prev.map((r) => ({
+        ...r,
+        y: r.y - ROCKET_SPEED,
+        x: r.x + r.drift,
+      })).filter((r) => r.y > -15)
       return next
     })
   }, !gameOver)
 
-  const handleUnlockM4 = useCallback(() => {
-    unlockModule4()
-    setModule4JustUnlocked(true)
-  }, [unlockModule4])
-
   const playAgain = () => {
     setGameOver(false)
-    setKites([])
+    setRockets([])
     setTimeLeft(GAME_DURATION)
     setFeedback(null)
-    setModule4JustUnlocked(false)
     setGameKey((k) => k + 1)
   }
 
@@ -183,31 +177,42 @@ export default function KiteCatch() {
           flex: 1,
           position: 'relative',
           overflow: 'hidden',
-          background: 'linear-gradient(180deg, #87ceeb 0%, #f0f8ff 100%)',
+          background: 'linear-gradient(180deg, #0b0e2a 0%, #1a1a4e 40%, #2d1b69 100%)',
         }}
       >
-        {kites.map((k) => (
+        {rockets.map((r) => (
           <div
-            key={k.id}
+            key={r.id}
             style={{
               position: 'absolute',
-              left: `${k.x}%`,
-              top: `${k.y}%`,
+              left: `${r.x}%`,
+              bottom: `${r.y}%`,
               transform: 'translateX(-50%)',
-              transition: 'left 0.05s linear, top 0.05s linear',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
             }}
           >
-            <svg width="72" height="56" viewBox="0 0 72 56" fill="none">
-              <polygon points="36,4 68,28 36,52 4,28" fill={k.color} stroke="#fff" strokeWidth="2" />
-              <polygon points="36,10 56,28 36,46 16,28" fill="rgba(255,255,255,0.25)" />
-              <text x="36" y="32" textAnchor="middle" fill="#fff"
+            <svg width="48" height="80" viewBox="0 0 48 80" fill="none">
+              <polygon points="24,0 20,30 28,30" fill={r.color} />
+              <rect x="18" y="30" width="12" height="28" rx="3" fill={r.color} />
+              <rect x="18" y="30" width="12" height="28" rx="3" fill="url(#rocketShine)" opacity="0.3" />
+              <rect x="22" y="14" width="4" height="10" rx="2" fill="#ffd700" opacity="0.8" />
+              <polygon points="18,58 15,66 33,66 30,58" fill="#ff6b35" />
+              <polygon points="18,66 14,72 34,72 30,66" fill="#ffd700" opacity="0.6" />
+              <text x="24" y="44" textAnchor="middle" fill="#fff"
                 fontFamily="'Comic Neue', cursive" fontWeight="700"
-                fontSize="18" letterSpacing="1"
+                fontSize="14" letterSpacing="1"
               >
-                {k.number}
+                {r.char}
               </text>
-              <line x1="36" y1="52" x2="36" y2="56" stroke="#888" strokeWidth="1.5" />
-              <polygon points="36,56 38,54 34,54" fill="#888" />
+              <rect x="21" y="30" width="6" height="26" rx="2" fill="rgba(255,255,255,0.15)" />
+              <defs>
+                <linearGradient id="rocketShine" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#fff" stopOpacity="0.6" />
+                  <stop offset="50%" stopColor="#fff" stopOpacity="0" />
+                </linearGradient>
+              </defs>
             </svg>
           </div>
         ))}
@@ -220,14 +225,14 @@ export default function KiteCatch() {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            background: 'rgba(0,0,0,0.3)',
+            background: 'rgba(0,0,0,0.5)',
             gap: 12,
           }}>
             <p style={{
               fontSize: 'clamp(2rem, 6vw, 3rem)',
               fontFamily: "'Fredoka', sans-serif",
               fontWeight: 700,
-              color: '#fff',
+              color: '#ffd700',
               textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
             }}>
               Waktu Habis!
@@ -235,44 +240,10 @@ export default function KiteCatch() {
             <p style={{
               fontSize: 'clamp(1.2rem, 3vw, 1.8rem)',
               fontFamily: "'Quicksand', sans-serif",
-              color: '#ffd700',
+              color: '#4ecdc4',
             }}>
               Skor: {state.score}
             </p>
-            {!state.module4Unlocked && state.score >= 400 && (
-              <button
-                onClick={handleUnlockM4}
-                style={{
-                  padding: '12px 32px',
-                  fontSize: 'clamp(1rem, 2.5vw, 1.4rem)',
-                  fontFamily: "'Fredoka', sans-serif",
-                  fontWeight: 600,
-                  color: '#fff',
-                  background: 'linear-gradient(135deg, #ff6b6b, #e84393)',
-                  borderRadius: 16,
-                  boxShadow: '0 4px 16px rgba(255,107,107,0.4)',
-                }}
-              >
-                🚀 Buka Roket!
-              </button>
-            )}
-            {state.module4Unlocked && (
-              <button
-                onClick={() => setScreen(SCREEN.ROCKET_CATCH)}
-                style={{
-                  padding: '12px 32px',
-                  fontSize: 'clamp(1rem, 2.5vw, 1.4rem)',
-                  fontFamily: "'Fredoka', sans-serif",
-                  fontWeight: 600,
-                  color: '#fff',
-                  background: 'linear-gradient(135deg, #ff6b6b, #e84393)',
-                  borderRadius: 16,
-                  boxShadow: '0 4px 16px rgba(255,107,107,0.4)',
-                }}
-              >
-                🚀 Luncurkan Roket!
-              </button>
-            )}
             <button
               onClick={playAgain}
               style={{
@@ -281,9 +252,9 @@ export default function KiteCatch() {
                 fontFamily: "'Fredoka', sans-serif",
                 fontWeight: 600,
                 color: '#fff',
-                background: 'linear-gradient(135deg, #4ecdc4, #44b09e)',
+                background: 'linear-gradient(135deg, #ff6b6b, #e84393)',
                 borderRadius: 16,
-                boxShadow: '0 4px 16px rgba(78,205,196,0.4)',
+                boxShadow: '0 4px 16px rgba(255,107,107,0.4)',
               }}
             >
               Main Lagi!

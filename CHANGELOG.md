@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.0 (2026-05-10)
+
+- Modul 4: RocketCatch — roket terbang dari bawah ke atas (rAF)
+- Isian campuran huruf A–Z + angka 0–9, 20 pts per catch
+- Unlock M4 saat skor ≥400 dari M3, latar gelap malam
+- Fix score bug: `useLetterSound` di-memoize + `gameOverRef` di handleKey
+- Keyboard event listener tidak berganti setiap frame (fix input drop)
+- `UPDATE_ALL` command di AGENTS.md
+
 ## 0.2.0 (2026-05-10)
 
 - Suara huruf dengan Web Speech API (bahasa Indonesia)

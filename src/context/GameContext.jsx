@@ -1,6 +1,6 @@
 import { createContext, useContext, useReducer, useEffect, useCallback } from 'react'
 
-const SCREEN = { SPLASH: 'splash', LETTER_HUNT: 'letterHunt', BALLOON_CATCH: 'balloonCatch', KITE_CATCH: 'kiteCatch' }
+const SCREEN = { SPLASH: 'splash', LETTER_HUNT: 'letterHunt', BALLOON_CATCH: 'balloonCatch', KITE_CATCH: 'kiteCatch', ROCKET_CATCH: 'rocketCatch' }
 const STORAGE_KEY = 'jaripintar_session'
 
 const initialState = {
@@ -9,6 +9,7 @@ const initialState = {
   module1Done: false,
   module2Unlocked: false,
   module3Unlocked: false,
+  module4Unlocked: false,
   name: '',
   gender: 'boy',
 }
@@ -33,10 +34,14 @@ function reducer(state, action) {
       return { ...state, module1Done: true, module2Unlocked: true }
     case 'UNLOCK_MODULE3':
       return { ...state, module3Unlocked: true }
+    case 'UNLOCK_MODULE4':
+      return { ...state, module4Unlocked: true }
     case 'START_MODULE2':
       return { ...state, screen: SCREEN.BALLOON_CATCH }
     case 'START_MODULE3':
       return { ...state, screen: SCREEN.KITE_CATCH }
+    case 'START_MODULE4':
+      return { ...state, screen: SCREEN.ROCKET_CATCH }
     case 'SET_SCREEN':
       return { ...state, screen: action.payload }
     case 'RESET':
@@ -57,23 +62,26 @@ export function GameProvider({ children }) {
       module1Done: state.module1Done,
       module2Unlocked: state.module2Unlocked,
       module3Unlocked: state.module3Unlocked,
+      module4Unlocked: state.module4Unlocked,
       name: state.name,
       gender: state.gender,
     }))
-  }, [state.score, state.module1Done, state.module2Unlocked, state.module3Unlocked])
+  }, [state.score, state.module1Done, state.module2Unlocked, state.module3Unlocked, state.module4Unlocked])
 
   const startGame = useCallback(() => dispatch({ type: 'START_GAME' }), [])
   const addScore = useCallback((pts) => dispatch({ type: 'ADD_SCORE', payload: pts }), [])
   const completeModule1 = useCallback(() => dispatch({ type: 'COMPLETE_MODULE1' }), [])
   const unlockModule3 = useCallback(() => dispatch({ type: 'UNLOCK_MODULE3' }), [])
+  const unlockModule4 = useCallback(() => dispatch({ type: 'UNLOCK_MODULE4' }), [])
   const startModule2 = useCallback(() => dispatch({ type: 'START_MODULE2' }), [])
   const startModule3 = useCallback(() => dispatch({ type: 'START_MODULE3' }), [])
+  const startModule4 = useCallback(() => dispatch({ type: 'START_MODULE4' }), [])
   const setScreen = useCallback((s) => dispatch({ type: 'SET_SCREEN', payload: s }), [])
   const setProfile = useCallback((name, gender) => dispatch({ type: 'SET_PROFILE', payload: { name, gender } }), [])
   const reset = useCallback(() => dispatch({ type: 'RESET' }), [])
 
   return (
-    <GameContext.Provider value={{ state, startGame, addScore, completeModule1, startModule2, startModule3, setScreen, setProfile, unlockModule3, reset, SCREEN }}>
+    <GameContext.Provider value={{ state, startGame, addScore, completeModule1, startModule2, startModule3, startModule4, setScreen, setProfile, unlockModule3, unlockModule4, reset, SCREEN }}>
       {children}
     </GameContext.Provider>
   )

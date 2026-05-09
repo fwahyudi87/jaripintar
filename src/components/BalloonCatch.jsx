@@ -25,24 +25,14 @@ export default function BalloonCatch() {
   const [gameKey, setGameKey] = useState(0)
   const [feedback, setFeedback] = useState(null)
   const [module3JustUnlocked, setModule3JustUnlocked] = useState(false)
-  const lastSpawnRef = useRef(0)
-  const startTimeRef = useRef(Date.now())
   const confettiRef = useRef(null)
   const playSound = useLetterSound()
 
-  const spawnBalloon = useCallback(() => {
-    setBalloons((prev) => {
-      if (prev.length >= BALLOON_COUNT) return prev
-      const letter = randomLetter()
-      const x = 10 + Math.random() * 60
-      const color = BALLOON_COLORS[Math.floor(Math.random() * BALLOON_COLORS.length)]
-      const id = Date.now() + Math.random()
-      return [...prev, { id, letter, x, y: 100, color }]
-    })
-  }, [])
+  const gameOverRef = useRef(false)
+  gameOverRef.current = gameOver
 
   const handleKey = useCallback((key) => {
-    if (gameOver) return
+    if (gameOverRef.current) return
     setPressedKey(key)
     setTimeout(() => setPressedKey(null), 150)
     playSound(key)
@@ -66,7 +56,7 @@ export default function BalloonCatch() {
       setFeedback('wrong')
       setTimeout(() => setFeedback(null), 300)
     }
-  }, [gameOver, addScore, playSound])
+  }, [addScore, playSound])
 
   const spawnConfetti = (x) => {
     if (!confettiRef.current) return
@@ -95,26 +85,33 @@ export default function BalloonCatch() {
     }
   }
 
+  const spawnBalloon = useCallback(() => {
+    setBalloons((prev) => {
+      if (prev.length >= BALLOON_COUNT) return prev
+      const letter = randomLetter()
+      const x = 10 + Math.random() * 60
+      const color = BALLOON_COLORS[Math.floor(Math.random() * BALLOON_COLORS.length)]
+      const id = Date.now() + Math.random()
+      return [...prev, { id, letter, x, y: 100, color }]
+    })
+  }, [])
+
   useEffect(() => {
     spawnBalloon()
-    startTimeRef.current = Date.now()
+    const startTime = Date.now()
 
     const spawnTimer = setInterval(() => {
       spawnBalloon()
     }, SPAWN_INTERVAL)
 
     const gameTimer = setInterval(() => {
-      const elapsed = Date.now() - startTimeRef.current
+      const elapsed = Date.now() - startTime
       const remaining = Math.max(0, GAME_DURATION - elapsed)
       setTimeLeft(remaining)
       if (remaining <= 0) {
         clearInterval(spawnTimer)
         clearInterval(gameTimer)
         setGameOver(true)
-        if (state.score >= 200 && !state.module3Unlocked) {
-          unlockModule3()
-          setModule3JustUnlocked(true)
-        }
       }
     }, 100)
 
@@ -124,7 +121,7 @@ export default function BalloonCatch() {
     }
   }, [spawnBalloon, gameKey])
 
-  useGameLoop((time) => {
+  useGameLoop(() => {
     setBalloons((prev) => {
       const next = prev.map((b) => ({
         ...b,
@@ -133,6 +130,11 @@ export default function BalloonCatch() {
       return next
     })
   }, !gameOver)
+
+  const handleGameOver = useCallback(() => {
+    unlockModule3()
+    setModule3JustUnlocked(true)
+  }, [unlockModule3])
 
   const playAgain = () => {
     setGameOver(false)
@@ -245,21 +247,23 @@ export default function BalloonCatch() {
             }}>
               Skor: {state.score}
             </p>
-            <button
-              onClick={playAgain}
-              style={{
-                padding: '14px 40px',
-                fontSize: 'clamp(1.2rem, 3vw, 1.8rem)',
-                fontFamily: "'Fredoka', sans-serif",
-                fontWeight: 600,
-                color: '#fff',
-                background: 'linear-gradient(135deg, #ff8c00, #ff6b35)',
-                borderRadius: 16,
-                boxShadow: '0 4px 16px rgba(255,140,0,0.4)',
-              }}
-            >
-              Main Lagi!
-            </button>
+            {!state.module3Unlocked && state.score >= 200 && (
+              <button
+                onClick={handleGameOver}
+                style={{
+                  padding: '12px 32px',
+                  fontSize: 'clamp(1rem, 2.5vw, 1.4rem)',
+                  fontFamily: "'Fredoka', sans-serif",
+                  fontWeight: 600,
+                  color: '#fff',
+                  background: 'linear-gradient(135deg, #4ecdc4, #44b09e)',
+                  borderRadius: 16,
+                  boxShadow: '0 4px 16px rgba(78,205,196,0.4)',
+                }}
+              >
+                🪁 Buka Layangan!
+              </button>
+            )}
             {state.module3Unlocked && (
               <button
                 onClick={() => setScreen(SCREEN.KITE_CATCH)}
@@ -277,6 +281,21 @@ export default function BalloonCatch() {
                 🪁 Lanjut ke Layangan!
               </button>
             )}
+            <button
+              onClick={playAgain}
+              style={{
+                padding: '14px 40px',
+                fontSize: 'clamp(1.2rem, 3vw, 1.8rem)',
+                fontFamily: "'Fredoka', sans-serif",
+                fontWeight: 600,
+                color: '#fff',
+                background: 'linear-gradient(135deg, #ff8c00, #ff6b35)',
+                borderRadius: 16,
+                boxShadow: '0 4px 16px rgba(255,140,0,0.4)',
+              }}
+            >
+              Main Lagi!
+            </button>
           </div>
         )}
       </div>

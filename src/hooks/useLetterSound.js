@@ -1,5 +1,7 @@
+import { useCallback } from 'react'
+
 export default function useLetterSound() {
-  return (text) => {
+  return useCallback((text) => {
     if (!window.speechSynthesis) return
     window.speechSynthesis.cancel()
     const utter = new SpeechSynthesisUtterance(text.toLowerCase())
@@ -7,5 +9,5 @@ export default function useLetterSound() {
     utter.rate = 0.7
     utter.pitch = 1.3
     window.speechSynthesis.speak(utter)
-  }
+  }, [])
 }
