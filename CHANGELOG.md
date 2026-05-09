@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.3 (2026-05-10)
+
+- OnScreenKeyboard: tombol bisa diklik mouse/sentuhan tablet (onPointerDown)
+
 ## 0.4.2 (2026-05-10)
 
 - Feedback banner pindah ke bawah ScoreBar, teks rata tengah

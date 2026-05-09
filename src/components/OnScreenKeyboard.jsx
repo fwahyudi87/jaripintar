@@ -64,7 +64,12 @@ export default function OnScreenKeyboard({ onKeyPress, pressedKey, showNumbers }
                     ? '0 0 12px rgba(255,215,0,0.6)'
                     : '0 2px 4px rgba(0,0,0,0.1)',
                 }}
-                onPointerDown={(e) => e.preventDefault()}
+                onPointerDown={(e) => {
+                  e.preventDefault()
+                  if (debounceRef.current) return
+                  debounceRef.current = setTimeout(() => { debounceRef.current = null }, 150)
+                  onKeyPress(n)
+                }}
               >
                 {n}
               </button>
@@ -102,7 +107,12 @@ export default function OnScreenKeyboard({ onKeyPress, pressedKey, showNumbers }
                     ? '0 0 12px rgba(255,215,0,0.6)'
                     : '0 2px 4px rgba(0,0,0,0.1)',
                 }}
-                onPointerDown={(e) => e.preventDefault()}
+                onPointerDown={(e) => {
+                  e.preventDefault()
+                  if (debounceRef.current) return
+                  debounceRef.current = setTimeout(() => { debounceRef.current = null }, 150)
+                  onKeyPress(letter)
+                }}
               >
                 {letter}
               </button>
