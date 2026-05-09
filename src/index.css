@@ -1,0 +1,45 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #f0f8ff;
+  --text: #2c3e50;
+  --accent: #ff8c00;
+  --accent-secondary: #bfff00;
+  --correct: #4caf50;
+  --wrong: #ff6b6b;
+  --key-left: #a8d8ea;
+  --key-right: #f9e79f;
+  --key-anchor: #ffd700;
+  --font-display: 'Fredoka', 'Balsamiq Sans', 'Quicksand', sans-serif;
+  --font-target: 'Comic Neue', 'Fredoka', cursive;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-display);
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+button:active {
+  transform: scale(0.95);
+}
