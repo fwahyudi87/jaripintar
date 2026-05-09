@@ -6,7 +6,7 @@ import useGameLoop from '../hooks/useGameLoop.js'
 import useLetterSound from '../hooks/useLetterSound.js'
 
 const NUMBERS = ['1','2','3','4','5','6','7','8','9','0']
-const KITE_SPEED = 0.25
+const KITE_SPEED = 0.12
 const SPAWN_INTERVAL = 2500
 const KITE_COUNT = 4
 const GAME_DURATION = 45000
@@ -197,7 +197,7 @@ export default function KiteCatch() {
               transition: 'left 0.05s linear, top 0.05s linear',
             }}
           >
-            <svg width="72" height="56" viewBox="0 0 72 56" fill="none">
+            <svg width="100" height="78" viewBox="0 0 72 56" fill="none">
               <polygon points="36,4 68,28 36,52 4,28" fill={k.color} stroke="#fff" strokeWidth="2" />
               <polygon points="36,10 56,28 36,46 16,28" fill="rgba(255,255,255,0.25)" />
               <text x="36" y="32" textAnchor="middle" fill="#fff"

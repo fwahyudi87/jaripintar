@@ -5,22 +5,39 @@ import ScoreBar from './ScoreBar.jsx'
 import useLetterSound from '../hooks/useLetterSound.js'
 
 const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-const ROUNDS_TO_COMPLETE = 8
+const NUMBERS = ['1','2','3','4','5','6','7','8','9','0']
+const LETTER_ROUNDS = 8
+const NUMBER_ROUNDS = 8
+const TOTAL_ROUNDS = LETTER_ROUNDS + NUMBER_ROUNDS
 
-function randomLetter() {
-  return LETTERS[Math.floor(Math.random() * LETTERS.length)]
+function randomItem(arr) {
+  return arr[Math.floor(Math.random() * arr.length)]
 }
 
 export default function LetterHunt() {
   const { state, addScore, completeModule1, setScreen, SCREEN } = useGame()
-  const [target, setTarget] = useState(() => randomLetter())
+  const [target, setTarget] = useState(() => randomItem(LETTERS))
   const [pressedKey, setPressedKey] = useState(null)
   const [feedback, setFeedback] = useState(null)
+  const [completed, setCompleted] = useState(false)
+  const [isNumberPhase, setIsNumberPhase] = useState(false)
+  const [transitioning, setTransitioning] = useState(false)
   const roundRef = useRef(0)
   const confettiRef = useRef(null)
   const playSound = useLetterSound()
 
+  const nextTarget = useCallback((round) => {
+    if (round < LETTER_ROUNDS) {
+      setIsNumberPhase(false)
+      setTarget(randomItem(LETTERS))
+    } else {
+      setIsNumberPhase(true)
+      setTarget(randomItem(NUMBERS))
+    }
+  }, [])
+
   const handleKey = useCallback((key) => {
+    if (transitioning) return
     setPressedKey(key)
     setTimeout(() => setPressedKey(null), 150)
     playSound(key)
@@ -31,21 +48,33 @@ export default function LetterHunt() {
       setFeedback('correct')
       spawnConfetti()
 
-      if (roundRef.current >= ROUNDS_TO_COMPLETE) {
+      if (roundRef.current >= TOTAL_ROUNDS) {
+        setCompleted(true)
         completeModule1()
         setTimeout(() => setScreen(SCREEN.BALLOON_CATCH), 1200)
         return
       }
 
+      if (roundRef.current === LETTER_ROUNDS) {
+        setTransitioning(true)
+        setTimeout(() => {
+          setIsNumberPhase(true)
+          setTarget(randomItem(NUMBERS))
+          setTransitioning(false)
+          setFeedback(null)
+        }, 1000)
+        return
+      }
+
       setTimeout(() => {
-        setTarget(randomLetter())
+        nextTarget(roundRef.current)
         setFeedback(null)
       }, 600)
     } else {
       setFeedback('wrong')
       setTimeout(() => setFeedback(null), 400)
     }
-  }, [target, addScore, completeModule1, setScreen, SCREEN, playSound])
+  }, [target, addScore, completeModule1, setScreen, SCREEN, playSound, transitioning, nextTarget])
 
   const spawnConfetti = () => {
     if (!confettiRef.current) return
@@ -73,6 +102,12 @@ export default function LetterHunt() {
     }
   }
 
+  const phaseProgress = isNumberPhase
+    ? roundRef.current - LETTER_ROUNDS
+    : roundRef.current
+
+  const phaseTotal = isNumberPhase ? NUMBER_ROUNDS : LETTER_ROUNDS
+
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <ScoreBar
@@ -94,28 +129,50 @@ export default function LetterHunt() {
           padding: 16,
         }}
       >
-        <p style={{
-          fontSize: 'clamp(1rem, 2.5vw, 1.4rem)',
-          fontFamily: "'Quicksand', sans-serif",
-          color: '#5a7a8a',
-        }}>
-          Tekan huruf di bawah ini!
-        </p>
+        {transitioning ? (
+          <p style={{
+            fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
+            fontFamily: "'Fredoka', sans-serif",
+            color: '#4ecdc4',
+            fontWeight: 600,
+            textAlign: 'center',
+          }}>
+            Bagus! Sekarang angka!
+          </p>
+        ) : (
+          <>
+            <p style={{
+              fontSize: 'clamp(1rem, 2.5vw, 1.4rem)',
+              fontFamily: "'Quicksand', sans-serif",
+              color: '#5a7a8a',
+            }}>
+              {isNumberPhase ? 'Tekan angka di bawah ini!' : 'Tekan huruf di bawah ini!'}
+            </p>
 
-        <div
-          style={{
-            fontSize: 'clamp(5rem, 15vw, 10rem)',
-            fontFamily: "'Comic Neue', cursive",
-            fontWeight: 700,
-            color: feedback === 'correct' ? '#4caf50' : feedback === 'wrong' ? '#ff6b6b' : '#ff8c00',
-            animation: feedback === 'wrong' ? 'shake 0.3s' : 'none',
-            transition: 'color 0.2s',
-          }}
-        >
-          {target}
-        </div>
+            <div
+              style={{
+                fontSize: 'clamp(5rem, 15vw, 10rem)',
+                fontFamily: "'Comic Neue', cursive",
+                fontWeight: 700,
+                color: feedback === 'correct' ? '#4caf50' : feedback === 'wrong' ? '#ff6b6b' : '#ff8c00',
+                animation: feedback === 'wrong' ? 'shake 0.3s' : 'none',
+                transition: 'color 0.2s',
+              }}
+            >
+              {target}
+            </div>
 
-        {state.module1Done && (
+            <p style={{
+              fontSize: '0.85rem',
+              fontFamily: "'Quicksand', sans-serif",
+              color: '#a0b8c0',
+            }}>
+              {isNumberPhase ? `Angka ${phaseProgress}/${phaseTotal}` : `Huruf ${phaseProgress}/${phaseTotal}`}
+            </p>
+          </>
+        )}
+
+        {completed && (
           <p style={{
             fontSize: 'clamp(1.2rem, 3vw, 1.8rem)',
             fontFamily: "'Fredoka', sans-serif",
@@ -125,17 +182,9 @@ export default function LetterHunt() {
             ✅ Mantap! Lanjut ke Balon!
           </p>
         )}
-
-        <p style={{
-          fontSize: '0.85rem',
-          fontFamily: "'Quicksand', sans-serif",
-          color: '#a0b8c0',
-        }}>
-          {roundRef.current} / {ROUNDS_TO_COMPLETE}
-        </p>
       </div>
 
-      <OnScreenKeyboard onKeyPress={handleKey} pressedKey={pressedKey} />
+      <OnScreenKeyboard onKeyPress={handleKey} pressedKey={pressedKey} showNumbers={isNumberPhase} />
 
       <style>{`
         @keyframes shake {

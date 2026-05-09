@@ -38,7 +38,7 @@ export default function RocketCatch() {
       const color = ROCKET_COLORS[Math.floor(Math.random() * ROCKET_COLORS.length)]
       const id = Date.now() + Math.random()
       const drift = (Math.random() - 0.5) * 0.15
-      return [...prev, { id, char, x, y: 100, color, drift }]
+      return [...prev, { id, char, x, y: 0, color, drift }]
     })
   }, [])
 
@@ -125,9 +125,9 @@ export default function RocketCatch() {
     setRockets((prev) => {
       const next = prev.map((r) => ({
         ...r,
-        y: r.y - ROCKET_SPEED,
+        y: r.y + ROCKET_SPEED,
         x: r.x + r.drift,
-      })).filter((r) => r.y > -15)
+      })).filter((r) => r.y < 115)
       return next
     })
   }, !gameOver)

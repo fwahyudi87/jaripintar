@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.1 (2026-05-10)
+
+- LetterHunt: tambah sesi angka 0-9 (8 huruf + 8 angka = 16 step)
+- Fix "Mantap! Lanjut ke Balon!" muncul di awal (pakai state lokal)
+- BalloonCatch: transisi balon dari atas ke bawah (balon jatuh)
+- RocketCatch: fix transisi roket dari bawah ke atas
+- KiteCatch: layangan lebih lambat (0.12) dan lebih besar (100×78)
+- Phase transition "Bagus! Sekarang angka!" di LetterHunt
+
 ## 0.3.0 (2026-05-10)
 
 - Modul 4: RocketCatch — roket terbang dari bawah ke atas (rAF)
