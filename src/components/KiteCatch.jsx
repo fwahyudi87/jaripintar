@@ -4,6 +4,7 @@ import OnScreenKeyboard from './OnScreenKeyboard.jsx'
 import ScoreBar from './ScoreBar.jsx'
 import useGameLoop from '../hooks/useGameLoop.js'
 import useLetterSound from '../hooks/useLetterSound.js'
+import useSoundFeedback from '../hooks/useSoundFeedback.js'
 
 const NUMBERS = ['1','2','3','4','5','6','7','8','9','0']
 const KITE_SPEED = 0.12
@@ -27,6 +28,7 @@ export default function KiteCatch() {
   const [module4JustUnlocked, setModule4JustUnlocked] = useState(false)
   const confettiRef = useRef(null)
   const playSound = useLetterSound()
+  const soundFeedback = useSoundFeedback()
 
   const gameOverRef = useRef(false)
   gameOverRef.current = gameOver
@@ -51,9 +53,11 @@ export default function KiteCatch() {
     if (hit) {
       addScore(15)
       setFeedback('correct')
+      soundFeedback.correct.play()
       setTimeout(() => setFeedback(null), 300)
     } else {
       setFeedback('wrong')
+      soundFeedback.wrong.play()
       setTimeout(() => setFeedback(null), 300)
     }
   }, [addScore, playSound])

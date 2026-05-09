@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0 (2026-05-10)
+
+- Audio feedback via Howler.js: chime (↑ C5→E5) saat benar, boop (↓ 300→100Hz) saat salah
+- WAV generator programatik (`src/utils/makeSound.js`) — tanpa file audio eksternal
+- Terintegrasi di semua modul: LetterHunt, BalloonCatch, KiteCatch, RocketCatch
+
 ## 0.3.1 (2026-05-10)
 
 - LetterHunt: tambah sesi angka 0-9 (8 huruf + 8 angka = 16 step)

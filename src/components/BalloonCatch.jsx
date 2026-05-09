@@ -4,6 +4,7 @@ import OnScreenKeyboard from './OnScreenKeyboard.jsx'
 import ScoreBar from './ScoreBar.jsx'
 import useGameLoop from '../hooks/useGameLoop.js'
 import useLetterSound from '../hooks/useLetterSound.js'
+import useSoundFeedback from '../hooks/useSoundFeedback.js'
 
 const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 const BALLOON_SPEED = 0.3
@@ -27,6 +28,7 @@ export default function BalloonCatch() {
   const [module3JustUnlocked, setModule3JustUnlocked] = useState(false)
   const confettiRef = useRef(null)
   const playSound = useLetterSound()
+  const soundFeedback = useSoundFeedback()
 
   const gameOverRef = useRef(false)
   gameOverRef.current = gameOver
@@ -51,9 +53,11 @@ export default function BalloonCatch() {
     if (hit) {
       addScore(10)
       setFeedback('correct')
+      soundFeedback.correct.play()
       setTimeout(() => setFeedback(null), 300)
     } else {
       setFeedback('wrong')
+      soundFeedback.wrong.play()
       setTimeout(() => setFeedback(null), 300)
     }
   }, [addScore, playSound])

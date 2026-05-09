@@ -4,6 +4,7 @@ import OnScreenKeyboard from './OnScreenKeyboard.jsx'
 import ScoreBar from './ScoreBar.jsx'
 import useGameLoop from '../hooks/useGameLoop.js'
 import useLetterSound from '../hooks/useLetterSound.js'
+import useSoundFeedback from '../hooks/useSoundFeedback.js'
 
 const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 const ROCKET_SPEED = 0.35
@@ -26,6 +27,7 @@ export default function RocketCatch() {
   const [feedback, setFeedback] = useState(null)
   const confettiRef = useRef(null)
   const playSound = useLetterSound()
+  const soundFeedback = useSoundFeedback()
 
   const gameOverRef = useRef(false)
   gameOverRef.current = gameOver
@@ -62,9 +64,11 @@ export default function RocketCatch() {
     if (hit) {
       addScore(20)
       setFeedback('correct')
+      soundFeedback.correct.play()
       setTimeout(() => setFeedback(null), 300)
     } else {
       setFeedback('wrong')
+      soundFeedback.wrong.play()
       setTimeout(() => setFeedback(null), 300)
     }
   }, [addScore, playSound])

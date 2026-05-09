@@ -3,6 +3,7 @@ import { useGame } from '../context/GameContext.jsx'
 import OnScreenKeyboard from './OnScreenKeyboard.jsx'
 import ScoreBar from './ScoreBar.jsx'
 import useLetterSound from '../hooks/useLetterSound.js'
+import useSoundFeedback from '../hooks/useSoundFeedback.js'
 
 const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 const NUMBERS = ['1','2','3','4','5','6','7','8','9','0']
@@ -25,27 +26,24 @@ export default function LetterHunt() {
   const roundRef = useRef(0)
   const confettiRef = useRef(null)
   const playSound = useLetterSound()
+  const soundFeedback = useSoundFeedback()
 
-  const nextTarget = useCallback((round) => {
-    if (round < LETTER_ROUNDS) {
-      setIsNumberPhase(false)
-      setTarget(randomItem(LETTERS))
-    } else {
-      setIsNumberPhase(true)
-      setTarget(randomItem(NUMBERS))
-    }
-  }, [])
+  const targetRef = useRef(target)
+  targetRef.current = target
+  const transitioningRef = useRef(transitioning)
+  transitioningRef.current = transitioning
 
   const handleKey = useCallback((key) => {
-    if (transitioning) return
+    if (transitioningRef.current) return
     setPressedKey(key)
     setTimeout(() => setPressedKey(null), 150)
     playSound(key)
 
-    if (key === target) {
+    if (key === targetRef.current) {
       addScore(10)
       roundRef.current += 1
       setFeedback('correct')
+      soundFeedback.correct.play()
       spawnConfetti()
 
       if (roundRef.current >= TOTAL_ROUNDS) {
@@ -57,24 +55,30 @@ export default function LetterHunt() {
 
       if (roundRef.current === LETTER_ROUNDS) {
         setTransitioning(true)
+        transitioningRef.current = true
         setTimeout(() => {
           setIsNumberPhase(true)
           setTarget(randomItem(NUMBERS))
           setTransitioning(false)
+          transitioningRef.current = false
           setFeedback(null)
         }, 1000)
         return
       }
 
       setTimeout(() => {
-        nextTarget(roundRef.current)
+        const next = roundRef.current < LETTER_ROUNDS
+          ? randomItem(LETTERS)
+          : randomItem(NUMBERS)
+        setTarget(next)
         setFeedback(null)
       }, 600)
     } else {
       setFeedback('wrong')
+      soundFeedback.wrong.play()
       setTimeout(() => setFeedback(null), 400)
     }
-  }, [target, addScore, completeModule1, setScreen, SCREEN, playSound, transitioning, nextTarget])
+  }, [addScore, completeModule1, setScreen, SCREEN, playSound])
 
   const spawnConfetti = () => {
     if (!confettiRef.current) return
