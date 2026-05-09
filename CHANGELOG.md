@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.2 (2026-05-10)
+
+- Feedback banner pindah ke bawah ScoreBar, teks rata tengah
+
 ## 0.4.1 (2026-05-10)
 
 - Halaman MenuScreen: 4 kartu modul (grid 2x2), modul terkunci tampil 🔒

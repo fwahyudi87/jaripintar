@@ -121,6 +121,23 @@ export default function LetterHunt() {
         onBack={() => setScreen(SCREEN.SPLASH)}
       />
 
+      {feedback && (
+        <div style={{
+          padding: '8px 16px',
+          margin: '0 12px 4px',
+          background: feedback === 'correct' ? '#d4edda' : '#f8d7da',
+          borderLeft: `4px solid ${feedback === 'correct' ? '#28a745' : '#dc3545'}`,
+          borderRadius: 8,
+          fontFamily: "'Fredoka', sans-serif",
+          fontWeight: 600,
+          fontSize: 'clamp(0.85rem, 2vw, 1rem)',
+          color: feedback === 'correct' ? '#155724' : '#721c24',
+          textAlign: 'center',
+        }}>
+          {feedback === 'correct' ? `KAMU HEBAT ${state.name}!` : `AYO ${state.name} KAMU BISA!`}
+        </div>
+      )}
+
       <div
         ref={confettiRef}
         style={{
@@ -188,22 +205,6 @@ export default function LetterHunt() {
         )}
       </div>
 
-      {feedback && (
-        <div style={{
-          padding: '8px 16px',
-          margin: '0 12px 4px',
-          background: feedback === 'correct' ? '#d4edda' : '#f8d7da',
-          borderLeft: `4px solid ${feedback === 'correct' ? '#28a745' : '#dc3545'}`,
-          borderRadius: 8,
-          fontFamily: "'Fredoka', sans-serif",
-          fontWeight: 600,
-          fontSize: 'clamp(0.85rem, 2vw, 1rem)',
-          color: feedback === 'correct' ? '#155724' : '#721c24',
-          textAlign: 'left',
-        }}>
-          {feedback === 'correct' ? `KAMU HEBAT ${state.name}!` : `AYO ${state.name} KAMU BISA!`}
-        </div>
-      )}
       <OnScreenKeyboard onKeyPress={handleKey} pressedKey={pressedKey} showNumbers={isNumberPhase} />
 
       <style>{`
