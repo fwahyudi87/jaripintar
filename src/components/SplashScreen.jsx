@@ -208,16 +208,31 @@ export default function SplashScreen() {
             ? 'linear-gradient(135deg, #4caf50, #2e7d32)'
             : '#ccc',
           borderRadius: 20,
+          border: 'none',
           boxShadow: name.trim()
             ? '0 6px 20px rgba(76,175,80,0.4)'
             : 'none',
-          transition: 'all 0.15s',
           letterSpacing: 2,
           opacity: name.trim() ? 1 : 0.5,
+          animation: name.trim() ? 'btnPulse 1.4s ease-in-out infinite' : 'none',
+          cursor: name.trim() ? 'pointer' : 'default',
         }}
       >
         MULAI MAIN!
       </button>
+
+      <style>{`
+        @keyframes btnPulse {
+          0%, 100% {
+            box-shadow: 0 6px 20px rgba(76,175,80,0.4), 0 0 0 0 rgba(76,175,80,0.4);
+            transform: scale(1);
+          }
+          50% {
+            box-shadow: 0 6px 30px rgba(76,175,80,0.7), 0 0 0 12px rgba(76,175,80,0);
+            transform: scale(1.03);
+          }
+        }
+      `}</style>
 
       <button
         onClick={toggleFullscreen}
