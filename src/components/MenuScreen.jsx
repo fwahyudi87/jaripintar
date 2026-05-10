@@ -52,7 +52,7 @@ export default function MenuScreen() {
 
   return (
     <>
-      <FloatingIcons count={14} />
+      <FloatingIcons count={16} />
       <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
         <ScoreBar
           name={state.name}
@@ -70,8 +70,6 @@ export default function MenuScreen() {
           gap: 12,
           padding: 16,
           background: 'linear-gradient(135deg, #f0f8ff 0%, #e8f4f8 100%)',
-          position: 'relative',
-          zIndex: 1,
         }}>
         <h2 style={{
           fontFamily: "'Fredoka', sans-serif",
@@ -137,7 +135,7 @@ export default function MenuScreen() {
               </span>
             </button>
           ))}
-</div>
+        </div>
         </div>
       </div>
     </>
