@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.2 (2026-05-10)
+
+- FloatingIcons: imperative DOM injection on MenuScreen only (removed from SplashScreen due to z-index conflicts)
+- SplashScreen: MULAI MAIN button pulsing glow animation, label-free name/gender row, placeholder "Isi Nama Kamu...", Copyright PYZ 2026 above version
+
 ## 0.6.1 (2026-05-10)
 
 - README: diperbarui mencakup 6 modul, level kesulitan, PWA, audio feedback
