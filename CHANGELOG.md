@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.3 (2026-05-10)
+
+- Back button routing: all game modules → MenuScreen, MenuScreen → SplashScreen
+- Name input UPPERCASE with clear/edit button (✏️)
+- NameFragment revert to substring slicing, fullname speech on complete
+
 ## 0.6.2 (2026-05-10)
 
 - FloatingIcons: imperative DOM injection on MenuScreen only (removed from SplashScreen due to z-index conflicts)
