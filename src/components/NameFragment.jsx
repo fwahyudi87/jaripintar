@@ -5,24 +5,16 @@ import ScoreBar from './ScoreBar.jsx'
 import useLetterSound from '../hooks/useLetterSound.js'
 import useSoundFeedback from '../hooks/useSoundFeedback.js'
 
-function syllabify(name) {
-  const VOWELS = 'AIUEOaiueo'
+function generateFragments(name) {
   const upper = name.toUpperCase()
-  const syllables = []
-  let start = 0
-
-  for (let i = 1; i < upper.length; i++) {
-    if (VOWELS.includes(upper[i]) && !VOWELS.includes(upper[i - 1])) {
-      syllables.push(upper.slice(start, i))
-      start = i
+  const fragments = []
+  for (let len = 2; len <= upper.length; len++) {
+    for (let i = 0; i + len <= upper.length; i++) {
+      fragments.push(upper.slice(i, i + len))
     }
   }
-  if (start < upper.length) {
-    syllables.push(upper.slice(start))
+return fragments
   }
-
-  return syllables.length > 0 ? syllables : [upper]
-}
 
 export default function NameFragment() {
   const { state, addScore, completeModule5, setScreen, SCREEN } = useGame()
@@ -30,7 +22,7 @@ export default function NameFragment() {
   const soundFeedback = useSoundFeedback()
 
   const fragments = useMemo(() => {
-    const f = syllabify(state.name)
+    const f = generateFragments(state.name)
     return f.length > 0 ? f : [state.name.toUpperCase() || 'A']
   }, [state.name])
 
