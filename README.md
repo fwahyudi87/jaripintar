@@ -1,16 +1,29 @@
 # JariPintar 🖐️
 
-Aplikasi web interaktif belajar mengetik untuk anak usia 5–7 tahun. 100% client-side, tanpa backend.
+Aplikasi web interaktif belajar mengetik untuk anak usia 5–7 tahun. 100% client-side SPA, tanpa backend.
 
 ## Fitur
 
-- **On-Screen Keyboard** — replika keyboard QWERTY dengan zona warna tangan (biru/kuning), highlight F & J
-- **Modul 1: LetterHunt** — tebak huruf yang muncul, 8 ronde → unlock Modul 2
-- **Modul 2: BalloonCatch** — balon naik, ketik huruf sebelum balon hilang, 45 detik
-- **Modul 3: KiteCatch** — layangan angka 0–9, melayang ke samping, unlock saat skor ≥200
-- **Suara huruf** — Web Speech API, suara Indonesia
-- **Fullscreen** — tombol layar penuh di splash screen
-- **Progres sesi** — nama, gender, skor, unlock modul tersimpan di `sessionStorage`
+- **6 Modul Permainan** — Berburu Huruf & Angka, Tangkap Balon, Tangkap Layangan, Tangkap Roket, Nama Saya, Lompat T-Rex
+- **On-Screen Keyboard** — replika QWERTY 3 baris + baris angka, zona warna tangan (biru/kuning), klik mouse/sentuhan tablet
+- **3 Level Kesulitan** — 🌱 Mudah, 🌿 Medium, 🌵 Sulit — mempengaruhi kecepatan musuh
+- **Audio Feedback** — suara benar (chime ↑) / salah (boop ↓) via Howler.js
+- **Suara Huruf** — Web Speech API, suara Indonesia (id-ID)
+- **Animasi Fisika** — rAF untuk balon jatuh, layangan melayang, roket naik
+- **PWA** — bisa diinstal ke layar depan, work offline (app shell cache)
+- **Progres Sesi** — nama, gender, skor, modul tersimpan di `sessionStorage`
+- **Fullscreen** — tombol layar penuh di halaman awal
+
+## Modul
+
+| # | Modul | Target | Poin |
+|---|-------|--------|------|
+| 1 | Berburu Huruf & Angka | A–Z + 0–9 (16 ronde) | — |
+| 2 | Tangkap Balon | A–Z (45 detik) | 10 |
+| 3 | Tangkap Layangan | 0–9 (45 detik) | 15 |
+| 4 | Tangkap Roket | A–Z + 0–9 (45 detik) | 20 |
+| 5 | Nama Saya | ketik potongan namamu | 15 |
+| 6 | Lompat T-Rex | A–Z + 0–9 (45 detik) | variabel |
 
 ## Cara pakai
 
@@ -23,7 +36,7 @@ npm run preview  # preview production build
 
 ## Tech
 
-React 18 · Vite 6 · Howler.js (terdaftar, belum dipakai) · Google Fonts
+React 18 · Vite 6 · Howler.js · Google Fonts (Fredoka, Quicksand, Comic Neue) · Web Speech API
 
 ## Lisensi
 

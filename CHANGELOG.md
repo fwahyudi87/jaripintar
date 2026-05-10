@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.1 (2026-05-10)
+
+- README: diperbarui mencakup 6 modul, level kesulitan, PWA, audio feedback
+
 ## 0.6.0 (2026-05-10)
 
 - Modul 5: NameFragment — ketik potongan nama sendiri (substring len 2 → full), 15pts/fragment
