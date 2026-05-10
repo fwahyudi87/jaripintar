@@ -76,73 +76,76 @@ export default function SplashScreen() {
         Ayo belajar mengetik sambil bermain!
       </p>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: 'clamp(200px, 60vw, 320px)' }}>
-        <label style={{
-          fontSize: '0.9rem',
-          fontFamily: "'Quicksand', sans-serif",
-          fontWeight: 600,
-          color: '#5a7a8a',
-        }}>
-          Nama kamu:
-        </label>
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Masukkan nama..."
-          maxLength={20}
-          onKeyDown={(e) => e.key === 'Enter' && handleStart()}
-          style={{
-            padding: '12px 16px',
-            fontSize: '1.2rem',
-            fontFamily: "'Fredoka', sans-serif",
-            border: '3px solid #c0d8e0',
-            borderRadius: 12,
-            outline: 'none',
-            textAlign: 'center',
-            background: '#fff',
-            color: '#2c3e50',
-          }}
-        />
-      </div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, width: '100%', maxWidth: 480 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: 1 }}>
+          <label style={{
+            fontSize: '0.85rem',
+            fontFamily: "'Quicksand', sans-serif",
+            fontWeight: 600,
+            color: '#5a7a8a',
+          }}>
+            Nama kamu:
+          </label>
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Masukkan nama..."
+            maxLength={20}
+            onKeyDown={(e) => e.key === 'Enter' && handleStart()}
+            style={{
+              padding: '10px 14px',
+              fontSize: '1.1rem',
+              fontFamily: "'Fredoka', sans-serif",
+              border: '3px solid #c0d8e0',
+              borderRadius: 12,
+              outline: 'none',
+              textAlign: 'center',
+              background: '#fff',
+              color: '#2c3e50',
+              width: '100%',
+            }}
+          />
+        </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
-        <p style={{
-          fontSize: '0.9rem',
-          fontFamily: "'Quicksand', sans-serif",
-          fontWeight: 600,
-          color: '#5a7a8a',
-        }}>
-          Kamu:
-        </p>
-        <div style={{ display: 'flex', gap: 12 }}>
-          <button
-            onClick={() => setGender('boy')}
-            style={{
-              padding: '12px 24px',
-              fontSize: '2rem',
-              background: gender === 'boy' ? '#a8d8ea' : 'rgba(255,255,255,0.5)',
-              borderRadius: 16,
-              border: gender === 'boy' ? '3px solid #7ab8d4' : '2px solid #c0d8e0',
-              transform: gender === 'boy' ? 'scale(1.05)' : 'scale(1)',
-              transition: 'all 0.15s',
-            }}
-          >
-            👦
-          </button>
-          <button
-            onClick={() => setGender('girl')}
-            style={{
-              padding: '12px 24px',
-              fontSize: '2rem',
-              background: gender === 'girl' ? '#f9e79f' : 'rgba(255,255,255,0.5)',
-              borderRadius: 16,
-              border: gender === 'girl' ? '3px solid #f0d060' : '2px solid #c0d8e0',
-              transform: gender === 'girl' ? 'scale(1.05)' : 'scale(1)',
-              transition: 'all 0.15s',
-            }}
-          >
-            👧
-          </button>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'center' }}>
+          <span style={{
+            fontSize: '0.85rem',
+            fontFamily: "'Quicksand', sans-serif",
+            fontWeight: 600,
+            color: '#5a7a8a',
+          }}>
+            Kamu:
+          </span>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button
+              onClick={() => setGender('boy')}
+              style={{
+                padding: '10px 16px',
+                fontSize: '1.8rem',
+                background: gender === 'boy' ? '#a8d8ea' : 'rgba(255,255,255,0.5)',
+                borderRadius: 14,
+                border: gender === 'boy' ? '3px solid #7ab8d4' : '2px solid #c0d8e0',
+                transform: gender === 'boy' ? 'scale(1.05)' : 'scale(1)',
+                transition: 'all 0.15s',
+              }}
+            >
+              👦
+            </button>
+            <button
+              onClick={() => setGender('girl')}
+              style={{
+                padding: '10px 16px',
+                fontSize: '1.8rem',
+                background: gender === 'girl' ? '#f9e79f' : 'rgba(255,255,255,0.5)',
+                borderRadius: 14,
+                border: gender === 'girl' ? '3px solid #f0d060' : '2px solid #c0d8e0',
+                transform: gender === 'girl' ? 'scale(1.05)' : 'scale(1)',
+                transition: 'all 0.15s',
+              }}
+            >
+              👧
+            </button>
+          </div>
         </div>
       </div>
 
@@ -153,7 +156,7 @@ export default function SplashScreen() {
           fontWeight: 600,
           color: '#5a7a8a',
         }}>
-          Level:
+          Pilih Level Kamu:
         </p>
         <div style={{ display: 'flex', gap: 8 }}>
           {LEVELS.map((l) => (
@@ -192,11 +195,11 @@ export default function SplashScreen() {
           fontWeight: 600,
           color: '#fff',
           background: name.trim()
-            ? 'linear-gradient(135deg, #ff8c00, #ff6b35)'
+            ? 'linear-gradient(135deg, #4caf50, #2e7d32)'
             : '#ccc',
           borderRadius: 20,
           boxShadow: name.trim()
-            ? '0 6px 20px rgba(255,140,0,0.4)'
+            ? '0 6px 20px rgba(76,175,80,0.4)'
             : 'none',
           transition: 'all 0.15s',
           letterSpacing: 2,
