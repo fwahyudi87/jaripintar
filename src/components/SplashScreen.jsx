@@ -77,19 +77,11 @@ export default function SplashScreen() {
       </p>
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, width: '100%', maxWidth: 480 }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: 1 }}>
-          <label style={{
-            fontSize: '0.85rem',
-            fontFamily: "'Quicksand', sans-serif",
-            fontWeight: 600,
-            color: '#5a7a8a',
-          }}>
-            Nama kamu:
-          </label>
+        <div style={{ flex: 1 }}>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Masukkan nama..."
+            placeholder="Isi Nama Kamu..."
             maxLength={20}
             onKeyDown={(e) => e.key === 'Enter' && handleStart()}
             style={{
@@ -110,14 +102,6 @@ export default function SplashScreen() {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'center' }}>
-          <span style={{
-            fontSize: '0.85rem',
-            fontFamily: "'Quicksand', sans-serif",
-            fontWeight: 600,
-            color: '#5a7a8a',
-          }}>
-            Kamu:
-          </span>
           <div style={{ display: 'flex', gap: 8 }}>
             <button
               onClick={() => setGender('boy')}
