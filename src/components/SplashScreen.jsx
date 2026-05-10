@@ -239,6 +239,16 @@ export default function SplashScreen() {
         fontFamily: "'Quicksand', sans-serif",
         color: '#b0c8d0',
         position: 'fixed',
+        bottom: 22,
+        zIndex: 2,
+      }}>
+        Copyright PYZ 2026
+      </p>
+      <p style={{
+        fontSize: '0.75rem',
+        fontFamily: "'Quicksand', sans-serif",
+        color: '#b0c8d0',
+        position: 'fixed',
         bottom: 8,
         zIndex: 2,
       }}>
