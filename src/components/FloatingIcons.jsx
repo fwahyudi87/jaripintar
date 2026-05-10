@@ -66,7 +66,7 @@ export default function FloatingIcons({ count = 16 }) {
       const dir = DIRECTIONS[i % DIRECTIONS.length]
       const size = 40 + (i % 4) * 10
       const delay = -(i * 1.3)
-      const opacity = 0.15 + (i % 4) * 0.04
+      const opacity = 0.04 + (i % 5) * 0.02
       const duration = 24 + (i % 6) * 5
       const pos = START_POSITIONS[dir]
 
@@ -82,6 +82,7 @@ export default function FloatingIcons({ count = 16 }) {
         pointer-events: none;
         user-select: none;
         will-change: transform;
+        z-index: 0;
       `
       container.appendChild(el)
       items.push(el)

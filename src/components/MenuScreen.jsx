@@ -70,6 +70,8 @@ export default function MenuScreen() {
           gap: 12,
           padding: 16,
           background: 'linear-gradient(135deg, #f0f8ff 0%, #e8f4f8 100%)',
+          position: 'relative',
+          zIndex: 1,
         }}>
         <h2 style={{
           fontFamily: "'Fredoka', sans-serif",
