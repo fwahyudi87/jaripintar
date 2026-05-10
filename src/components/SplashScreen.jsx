@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useGame } from '../context/GameContext.jsx'
-import FloatingIcons from './FloatingIcons.jsx'
 
 const LEVELS = [
   { key: 'easy', label: 'Mudah', emoji: '🌱', color: '#4caf50' },
@@ -45,18 +44,16 @@ export default function SplashScreen() {
   }
 
   return (
-    <>
-      <FloatingIcons count={16} />
-      <div style={{
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 28,
-        padding: 24,
-        background: 'linear-gradient(135deg, #f0f8ff 0%, #e8f4f8 100%)',
-      }}>
+    <div style={{
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 28,
+      padding: 24,
+      background: 'linear-gradient(135deg, #f0f8ff 0%, #e8f4f8 100%)',
+    }}>
       <h1 style={{
         fontSize: 'clamp(2.5rem, 8vw, 5rem)',
         fontFamily: "'Fredoka', sans-serif",
@@ -249,6 +246,5 @@ export default function SplashScreen() {
         v{APP_VERSION}
       </p>
     </div>
-    </>
   )
 }
