@@ -5,15 +5,23 @@ import ScoreBar from './ScoreBar.jsx'
 import useLetterSound from '../hooks/useLetterSound.js'
 import useSoundFeedback from '../hooks/useSoundFeedback.js'
 
-function generateFragments(name) {
+function syllabify(name) {
+  const VOWELS = 'AIUEOaiueo'
   const upper = name.toUpperCase()
-  const fragments = []
-  for (let len = 2; len <= upper.length; len++) {
-    for (let i = 0; i + len <= upper.length; i++) {
-      fragments.push(upper.slice(i, i + len))
+  const syllables = []
+  let start = 0
+
+  for (let i = 1; i < upper.length; i++) {
+    if (VOWELS.includes(upper[i]) && !VOWELS.includes(upper[i - 1])) {
+      syllables.push(upper.slice(start, i))
+      start = i
     }
   }
-  return fragments
+  if (start < upper.length) {
+    syllables.push(upper.slice(start))
+  }
+
+  return syllables.length > 0 ? syllables : [upper]
 }
 
 export default function NameFragment() {
@@ -22,7 +30,7 @@ export default function NameFragment() {
   const soundFeedback = useSoundFeedback()
 
   const fragments = useMemo(() => {
-    const f = generateFragments(state.name)
+    const f = syllabify(state.name)
     return f.length > 0 ? f : [state.name.toUpperCase() || 'A']
   }, [state.name])
 
@@ -60,7 +68,13 @@ export default function NameFragment() {
           soundFeedback.correct.play()
           setTimeout(() => setFeedback(null), 600)
           completeModule5()
-          setTimeout(() => setScreen(SCREEN.MENU), 1200)
+          if (window.speechSynthesis) {
+            const utter = new SpeechSynthesisUtterance(state.name)
+            utter.lang = 'id-ID'
+            utter.rate = 0.85
+            speechSynthesis.speak(utter)
+          }
+          setTimeout(() => setScreen(SCREEN.MENU), 1500)
         } else {
           setFeedback('correct')
           soundFeedback.correct.play()
@@ -81,7 +95,7 @@ export default function NameFragment() {
       soundFeedback.wrong.play()
       setTimeout(() => setFeedback(null), 400)
     }
-  }, [completed, currentFragment, fragments, addScore, completeModule5, setScreen, SCREEN, playSound])
+  }, [completed, currentFragment, fragments, addScore, completeModule5, setScreen, SCREEN, playSound, state.name])
 
   const spawnConfetti = () => {
     if (!confettiRef.current) return
