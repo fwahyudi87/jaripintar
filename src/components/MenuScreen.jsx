@@ -1,5 +1,6 @@
 import { useGame } from '../context/GameContext.jsx'
 import ScoreBar from './ScoreBar.jsx'
+import FloatingIcons from './FloatingIcons.jsx'
 
 const MODULES = [
   {
@@ -50,24 +51,28 @@ export default function MenuScreen() {
   const { state, setScreen, SCREEN } = useGame()
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <ScoreBar
-        name={state.name}
-        gender={state.gender}
-        score={state.score}
-        onBack={() => setScreen(SCREEN.SPLASH)}
-      />
+    <>
+      <FloatingIcons count={14} />
+      <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+        <ScoreBar
+          name={state.name}
+          gender={state.gender}
+          score={state.score}
+          onBack={() => setScreen(SCREEN.SPLASH)}
+        />
 
-      <div style={{
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 12,
-        padding: 16,
-        background: 'linear-gradient(135deg, #f0f8ff 0%, #e8f4f8 100%)',
-      }}>
+        <div style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 12,
+          padding: 16,
+          background: 'linear-gradient(135deg, #f0f8ff 0%, #e8f4f8 100%)',
+          position: 'relative',
+          zIndex: 1,
+        }}>
         <h2 style={{
           fontFamily: "'Fredoka', sans-serif",
           fontSize: 'clamp(1.3rem, 3.5vw, 2rem)',
@@ -132,8 +137,9 @@ export default function MenuScreen() {
               </span>
             </button>
           ))}
+</div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
