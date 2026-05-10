@@ -9,7 +9,6 @@ const ROWS = [
 const NUMBERS = ['1','2','3','4','5','6','7','8','9','0']
 
 const LEFT_KEYS = new Set(['Q','W','E','R','T','A','S','D','F','G','Z','X','C','V','B'])
-const ANCHOR_KEYS = new Set(['F','J'])
 
 export default function OnScreenKeyboard({ onKeyPress, pressedKey, showNumbers }) {
   const debounceRef = useRef(null)
@@ -57,15 +56,15 @@ export default function OnScreenKeyboard({ onKeyPress, pressedKey, showNumbers }
                   color: '#2c3e50',
                   background: isPressed ? '#ffd700' : '#e8d5b7',
                   borderRadius: 8,
-                  border: '1px solid rgba(0,0,0,0.08)',
+                  border: '2px solid rgba(0,0,0,0.06)',
                   transform: isPressed ? 'scale(1.15)' : 'scale(1)',
                   transition: 'transform 0.08s, background 0.08s',
                   boxShadow: isPressed
                     ? '0 0 12px rgba(255,215,0,0.6)'
                     : '0 2px 4px rgba(0,0,0,0.1)',
                 }}
-                onPointerDown={(e) => {
-                  e.preventDefault()
+                onPointerDown={(e) => e.preventDefault()}
+                onClick={() => {
                   if (debounceRef.current) return
                   debounceRef.current = setTimeout(() => { debounceRef.current = null }, 150)
                   onKeyPress(n)
@@ -81,7 +80,6 @@ export default function OnScreenKeyboard({ onKeyPress, pressedKey, showNumbers }
         <div key={ri} style={{ display: 'flex', gap: 4, justifyContent: 'center', width: '100%' }}>
           {row.map((letter) => {
             const isLeft = LEFT_KEYS.has(letter)
-            const isAnchor = ANCHOR_KEYS.has(letter)
             const isPressed = pressedKey === letter
             return (
               <button
@@ -100,15 +98,15 @@ export default function OnScreenKeyboard({ onKeyPress, pressedKey, showNumbers }
                       ? '#a8d8ea'
                       : '#f9e79f',
                   borderRadius: 8,
-                  border: isAnchor ? '3px solid #ffd700' : '1px solid rgba(0,0,0,0.08)',
+                  border: '2px solid rgba(0,0,0,0.06)',
                   transform: isPressed ? 'scale(1.15)' : 'scale(1)',
                   transition: 'transform 0.08s, background 0.08s',
                   boxShadow: isPressed
                     ? '0 0 12px rgba(255,215,0,0.6)'
                     : '0 2px 4px rgba(0,0,0,0.1)',
                 }}
-                onPointerDown={(e) => {
-                  e.preventDefault()
+                onPointerDown={(e) => e.preventDefault()}
+                onClick={() => {
                   if (debounceRef.current) return
                   debounceRef.current = setTimeout(() => { debounceRef.current = null }, 150)
                   onKeyPress(letter)

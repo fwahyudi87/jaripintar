@@ -12,6 +12,7 @@ const initialState = {
   module4Unlocked: false,
   name: '',
   gender: 'boy',
+  level: 'medium',
 }
 
 function loadSession() {
@@ -44,6 +45,8 @@ function reducer(state, action) {
       return { ...state, screen: SCREEN.ROCKET_CATCH }
     case 'SET_SCREEN':
       return { ...state, screen: action.payload }
+    case 'SET_LEVEL':
+      return { ...state, level: action.payload }
     case 'RESET':
       return { ...initialState }
     default:
@@ -65,6 +68,7 @@ export function GameProvider({ children }) {
       module4Unlocked: state.module4Unlocked,
       name: state.name,
       gender: state.gender,
+      level: state.level,
     }))
   }, [state.score, state.module1Done, state.module2Unlocked, state.module3Unlocked, state.module4Unlocked])
 
@@ -78,10 +82,11 @@ export function GameProvider({ children }) {
   const startModule4 = useCallback(() => dispatch({ type: 'START_MODULE4' }), [])
   const setScreen = useCallback((s) => dispatch({ type: 'SET_SCREEN', payload: s }), [])
   const setProfile = useCallback((name, gender) => dispatch({ type: 'SET_PROFILE', payload: { name, gender } }), [])
+  const setLevel = useCallback((level) => dispatch({ type: 'SET_LEVEL', payload: level }), [])
   const reset = useCallback(() => dispatch({ type: 'RESET' }), [])
 
   return (
-    <GameContext.Provider value={{ state, startGame, addScore, completeModule1, startModule2, startModule3, startModule4, setScreen, setProfile, unlockModule3, unlockModule4, reset, SCREEN }}>
+    <GameContext.Provider value={{ state, startGame, addScore, completeModule1, startModule2, startModule3, startModule4, setScreen, setProfile, setLevel, unlockModule3, unlockModule4, reset, SCREEN }}>
       {children}
     </GameContext.Provider>
   )

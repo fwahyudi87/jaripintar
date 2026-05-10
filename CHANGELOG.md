@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.0 (2026-05-10)
+
+- PWA: manifest.json, SVG icons, service worker (app shell cache), apple-mobile-web-app meta
+- Level selection: 🌱 Mudah / 🌿 Medium / 🌵 Sulit di halaman awal
+- Kecepatan balon, layangan, roket menyesuaikan level
+- Tombol fullscreen toggle (masuk/keluar), teks berubah sesuai state
+- Anchor highlight F/J dihapus dari keyboard
+
 ## 0.4.3 (2026-05-10)
 
 - OnScreenKeyboard: tombol bisa diklik mouse/sentuhan tablet (onPointerDown)

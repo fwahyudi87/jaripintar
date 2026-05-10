@@ -7,7 +7,7 @@ import useLetterSound from '../hooks/useLetterSound.js'
 import useSoundFeedback from '../hooks/useSoundFeedback.js'
 
 const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-const ROCKET_SPEED = 0.2
+const ROCKET_SPEED_MAP = { easy: 0.15, medium: 0.2, hard: 0.3 }
 const SPAWN_INTERVAL = 2800
 const ROCKET_COUNT = 4
 const GAME_DURATION = 45000
@@ -28,6 +28,7 @@ export default function RocketCatch() {
   const confettiRef = useRef(null)
   const playSound = useLetterSound()
   const soundFeedback = useSoundFeedback()
+  const rocketSpeed = ROCKET_SPEED_MAP[state.level]
 
   const gameOverRef = useRef(false)
   gameOverRef.current = gameOver
@@ -129,7 +130,7 @@ export default function RocketCatch() {
     setRockets((prev) => {
       const next = prev.map((r) => ({
         ...r,
-        y: r.y + ROCKET_SPEED,
+        y: r.y + rocketSpeed,
         x: r.x + r.drift,
       })).filter((r) => r.y < 115)
       return next

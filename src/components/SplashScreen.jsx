@@ -1,23 +1,45 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useGame } from '../context/GameContext.jsx'
 
+const LEVELS = [
+  { key: 'easy', label: 'Mudah', emoji: '🌱', color: '#4caf50' },
+  { key: 'medium', label: 'Medium', emoji: '🌿', color: '#ff8c00' },
+  { key: 'hard', label: 'Sulit', emoji: '🌵', color: '#e84393' },
+]
+
 export default function SplashScreen() {
-  const { state, setProfile, startGame } = useGame()
+  const { state, setProfile, setLevel, startGame } = useGame()
   const [name, setName] = useState(state.name || '')
   const [gender, setGender] = useState(state.gender || 'boy')
+  const [level, setLocalLevel] = useState(state.level || 'medium')
+  const [isFullscreen, setIsFullscreen] = useState(false)
+
+  useEffect(() => {
+    const handler = () => setIsFullscreen(!!(document.fullscreenElement || document.webkitFullscreenElement))
+    document.addEventListener('fullscreenchange', handler)
+    document.addEventListener('webkitfullscreenchange', handler)
+    return () => {
+      document.removeEventListener('fullscreenchange', handler)
+      document.removeEventListener('webkitfullscreenchange', handler)
+    }
+  }, [])
 
   const handleStart = () => {
     if (!name.trim()) return
     setProfile(name.trim(), gender)
+    setLevel(level)
     startGame()
   }
 
-  const goFullscreen = () => {
-    const el = document.documentElement
-    if (el.requestFullscreen) {
-      el.requestFullscreen()
-    } else if (el.webkitRequestFullscreen) {
-      el.webkitRequestFullscreen()
+  const toggleFullscreen = () => {
+    const isFS = document.fullscreenElement || document.webkitFullscreenElement
+    if (!isFS) {
+      const el = document.documentElement
+      if (el.requestFullscreen) el.requestFullscreen()
+      else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen()
+    } else {
+      if (document.exitFullscreen) document.exitFullscreen()
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen()
     }
   }
 
@@ -124,6 +146,42 @@ export default function SplashScreen() {
         </div>
       </div>
 
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
+        <p style={{
+          fontSize: '0.9rem',
+          fontFamily: "'Quicksand', sans-serif",
+          fontWeight: 600,
+          color: '#5a7a8a',
+        }}>
+          Level:
+        </p>
+        <div style={{ display: 'flex', gap: 8 }}>
+          {LEVELS.map((l) => (
+            <button
+              key={l.key}
+              onClick={() => setLocalLevel(l.key)}
+              style={{
+                padding: '10px 16px',
+                fontSize: 'clamp(0.8rem, 2vw, 1rem)',
+                fontFamily: "'Fredoka', sans-serif",
+                fontWeight: 600,
+                color: level === l.key ? '#fff' : '#5a7a8a',
+                background: level === l.key ? l.color : 'rgba(255,255,255,0.5)',
+                borderRadius: 14,
+                border: level === l.key ? '3px solid transparent' : '2px solid #c0d8e0',
+                transform: level === l.key ? 'scale(1.05)' : 'scale(1)',
+                transition: 'all 0.15s',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 4,
+              }}
+            >
+              {l.emoji} {l.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <button
         onClick={handleStart}
         disabled={!name.trim()}
@@ -149,7 +207,7 @@ export default function SplashScreen() {
       </button>
 
       <button
-        onClick={goFullscreen}
+        onClick={toggleFullscreen}
         style={{
           padding: '10px 24px',
           fontSize: '0.9rem',
@@ -161,7 +219,7 @@ export default function SplashScreen() {
           border: '2px solid #c0d8e0',
         }}
       >
-        Layar Penuh
+        {isFullscreen ? '⟳ Layar Normal' : '⛶ Layar Penuh'}
       </button>
 
       <p style={{

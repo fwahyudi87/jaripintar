@@ -7,7 +7,7 @@ import useLetterSound from '../hooks/useLetterSound.js'
 import useSoundFeedback from '../hooks/useSoundFeedback.js'
 
 const NUMBERS = ['1','2','3','4','5','6','7','8','9','0']
-const KITE_SPEED = 0.12
+const KITE_SPEED_MAP = { easy: 0.09, medium: 0.12, hard: 0.18 }
 const SPAWN_INTERVAL = 2500
 const KITE_COUNT = 4
 const GAME_DURATION = 45000
@@ -29,6 +29,7 @@ export default function KiteCatch() {
   const confettiRef = useRef(null)
   const playSound = useLetterSound()
   const soundFeedback = useSoundFeedback()
+  const kiteSpeed = KITE_SPEED_MAP[state.level]
 
   const gameOverRef = useRef(false)
   gameOverRef.current = gameOver
@@ -129,7 +130,7 @@ export default function KiteCatch() {
     setKites((prev) => {
       const next = prev.map((k) => ({
         ...k,
-        x: k.fromRight ? k.x - KITE_SPEED : k.x + KITE_SPEED,
+        x: k.fromRight ? k.x - kiteSpeed : k.x + kiteSpeed,
         y: k.y + Math.sin(Date.now() / 800 + k.id) * 0.15,
       })).filter((k) => k.x > -15 && k.x < 115)
       return next

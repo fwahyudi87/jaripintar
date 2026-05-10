@@ -7,7 +7,7 @@ import useLetterSound from '../hooks/useLetterSound.js'
 import useSoundFeedback from '../hooks/useSoundFeedback.js'
 
 const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-const BALLOON_SPEED = 0.3
+const BALLOON_SPEED_MAP = { easy: 0.25, medium: 0.3, hard: 0.45 }
 const SPAWN_INTERVAL = 2500
 const BALLOON_COUNT = 5
 const GAME_DURATION = 45000
@@ -29,6 +29,7 @@ export default function BalloonCatch() {
   const confettiRef = useRef(null)
   const playSound = useLetterSound()
   const soundFeedback = useSoundFeedback()
+  const balloonSpeed = BALLOON_SPEED_MAP[state.level]
 
   const gameOverRef = useRef(false)
   gameOverRef.current = gameOver
@@ -129,7 +130,7 @@ export default function BalloonCatch() {
     setBalloons((prev) => {
       const next = prev.map((b) => ({
         ...b,
-        y: b.y - BALLOON_SPEED,
+        y: b.y - balloonSpeed,
       })).filter((b) => b.y > -10)
       return next
     })
