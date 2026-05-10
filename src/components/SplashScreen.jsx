@@ -94,15 +94,17 @@ export default function SplashScreen() {
             onKeyDown={(e) => e.key === 'Enter' && handleStart()}
             style={{
               padding: '10px 14px',
-              fontSize: '1.1rem',
+              fontSize: '1.3rem',
               fontFamily: "'Fredoka', sans-serif",
               border: '3px solid #c0d8e0',
-              borderRadius: 12,
+              borderRadius: 14,
               outline: 'none',
               textAlign: 'center',
               background: '#fff',
               color: '#2c3e50',
               width: '100%',
+              height: '52px',
+              boxSizing: 'border-box',
             }}
           />
         </div>
@@ -127,6 +129,10 @@ export default function SplashScreen() {
                 border: gender === 'boy' ? '3px solid #7ab8d4' : '2px solid #c0d8e0',
                 transform: gender === 'boy' ? 'scale(1.05)' : 'scale(1)',
                 transition: 'all 0.15s',
+                height: '52px',
+                boxSizing: 'border-box',
+                display: 'flex',
+                alignItems: 'center',
               }}
             >
               👦
@@ -141,6 +147,10 @@ export default function SplashScreen() {
                 border: gender === 'girl' ? '3px solid #f0d060' : '2px solid #c0d8e0',
                 transform: gender === 'girl' ? 'scale(1.05)' : 'scale(1)',
                 transition: 'all 0.15s',
+                height: '52px',
+                boxSizing: 'border-box',
+                display: 'flex',
+                alignItems: 'center',
               }}
             >
               👧
