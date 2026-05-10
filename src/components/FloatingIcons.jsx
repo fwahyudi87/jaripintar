@@ -4,15 +4,22 @@ const ICONS = ['🔤', '🎈', '🪁', '🚀', '✍️', '🦖']
 
 const DIRECTIONS = ['tr-bl', 'bl-tr', 'tl-br', 'br-tl']
 
+const ANIM_MAP = {
+  'tr-bl': { x: '-120vw', y: '110vh', rot: 360 },
+  'bl-tr': { x: '120vw', y: '-110vh', rot: -360 },
+  'tl-br': { x: '110vw', y: '110vh', rot: 360 },
+  'br-tl': { x: '-110vw', y: '-110vh', rot: -360 },
+}
+
 export default function FloatingIcons({ count = 12 }) {
   const items = useMemo(() => (
     Array.from({ length: count }, (_, i) => ({
       id: i,
       icon: ICONS[i % ICONS.length],
-      direction: DIRECTIONS[i % DIRECTIONS.length],
-      size: 24 + (i % 3) * 10,
-      delay: -(i * 0.8),
-      opacity: 0.08 + (i % 4) * 0.02,
+      dir: DIRECTIONS[i % DIRECTIONS.length],
+      size: 36 + (i % 4) * 8,
+      delay: -(i * 1.2),
+      opacity: 0.12 + (i % 4) * 0.03,
     }))
   ), [count])
 
@@ -20,49 +27,52 @@ export default function FloatingIcons({ count = 12 }) {
     <>
       <style>{`
         @keyframes float-tr-bl {
-          0%   { transform: translate(0px, 0px) rotate(0deg); opacity: 0; }
-          10%  { opacity: 1; }
-          90%  { opacity: 1; }
-          100% { transform: translate(-120vw, 100vh) rotate(360deg); opacity: 0; }
+          0%   { transform: translate(0, 0) rotate(0deg); }
+          8%   { opacity: 1; }
+          92%  { opacity: 1; }
+          100% { transform: translate(-120vw, 110vh) rotate(360deg); }
         }
         @keyframes float-bl-tr {
-          0%   { transform: translate(0px, 0px) rotate(0deg); opacity: 0; }
-          10%  { opacity: 1; }
-          90%  { opacity: 1; }
-          100% { transform: translate(120vw, -100vh) rotate(-360deg); opacity: 0; }
+          0%   { transform: translate(0, 0) rotate(0deg); }
+          8%   { opacity: 1; }
+          92%  { opacity: 1; }
+          100% { transform: translate(120vw, -110vh) rotate(-360deg); }
         }
         @keyframes float-tl-br {
-          0%   { transform: translate(0px, 0px) rotate(0deg); opacity: 0; }
-          10%  { opacity: 1; }
-          90%  { opacity: 1; }
-          100% { transform: translate(100vw, 100vh) rotate(270deg); opacity: 0; }
+          0%   { transform: translate(0, 0) rotate(0deg); }
+          8%   { opacity: 1; }
+          92%  { opacity: 1; }
+          100% { transform: translate(110vw, 110vh) rotate(360deg); }
         }
         @keyframes float-br-tl {
-          0%   { transform: translate(0px, 0px) rotate(0deg); opacity: 0; }
-          10%  { opacity: 1; }
-          90%  { opacity: 1; }
-          100% { transform: translate(-100vw, -100vh) rotate(-270deg); opacity: 0; }
+          0%   { transform: translate(0, 0) rotate(0deg); }
+          8%   { opacity: 1; }
+          92%  { opacity: 1; }
+          100% { transform: translate(-110vw, -110vh) rotate(-360deg); }
         }
       `}</style>
       {items.map((item) => {
-        const anim = `float-${item.direction}`
-        const startX = item.direction.includes('tr') || item.direction.includes('tl')
-          ? '80vw' : item.direction.includes('bl') ? '0vw' : '-10vw'
-        const startY = item.direction.includes('tl') || item.direction.includes('bl')
-          ? '0vh' : '-10vh'
+        const startMap = {
+          'tr-bl': { left: '85vw', top: '-5vh' },
+          'bl-tr': { left: '-5vw', top: '105vh' },
+          'tl-br': { left: '-5vw', top: '-5vh' },
+          'br-tl': { left: '85vw', top: '105vh' },
+        }
+        const pos = startMap[item.dir]
         return (
           <span
             key={item.id}
             style={{
               position: 'fixed',
-              left: startX,
-              top: startY,
+              left: pos.left,
+              top: pos.top,
               fontSize: `${item.size}px`,
               opacity: item.opacity,
-              animation: `${anim} ${18 + (item.id % 6) * 4}s linear ${item.delay}s infinite`,
+              animation: `float-${item.dir} ${22 + (item.id % 6) * 5}s linear ${item.delay}s infinite`,
               pointerEvents: 'none',
               zIndex: 0,
               userSelect: 'none',
+              willChange: 'transform',
             }}
           >
             {item.icon}
