@@ -77,17 +77,18 @@ export default function SplashScreen() {
       </p>
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, width: '100%', maxWidth: 480 }}>
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: 1, position: 'relative' }}>
           <input
             value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Isi Nama Kamu..."
+            onChange={(e) => setName(e.target.value.toUpperCase())}
+            placeholder="ISI NAMA KAMU..."
             maxLength={20}
             onKeyDown={(e) => e.key === 'Enter' && handleStart()}
             style={{
-              padding: '10px 14px',
+              padding: '10px 40px 10px 14px',
               fontSize: '1.3rem',
               fontFamily: "'Fredoka', sans-serif",
+              fontWeight: 600,
               border: '3px solid #c0d8e0',
               borderRadius: 14,
               outline: 'none',
@@ -97,8 +98,29 @@ export default function SplashScreen() {
               width: '100%',
               height: '52px',
               boxSizing: 'border-box',
+              textTransform: 'uppercase',
+              letterSpacing: 1,
             }}
           />
+          {name && (
+            <button
+              onClick={() => setName('')}
+              style={{
+                position: 'absolute',
+                right: 10,
+                top: '50%',
+                transform: 'translateY(-50%)',
+                background: 'none',
+                border: 'none',
+                fontSize: '1.2rem',
+                cursor: 'pointer',
+                padding: 4,
+                opacity: 0.5,
+              }}
+            >
+              ✏️
+            </button>
+          )}
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'center' }}>
