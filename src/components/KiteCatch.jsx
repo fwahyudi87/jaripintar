@@ -90,7 +90,7 @@ export default function KiteCatch() {
       const color = KITE_COLORS[Math.floor(Math.random() * KITE_COLORS.length)]
       const id = Date.now() + Math.random()
       const fromRight = Math.random() > 0.5
-      return [...prev, { id, number, x: fromRight ? 110 : -10, y: 20 + Math.random() * 50, color, fromRight }]
+      return [...prev, { id, number, x: 2 + Math.random() * 88, y: 15 + Math.random() * 55, color, fromRight }]
     })
   }, [])
 
@@ -204,13 +204,12 @@ export default function KiteCatch() {
         {kites.map((k) => (
           <div
             key={k.id}
-            style={{
-              position: 'absolute',
-              left: `${k.x}%`,
-              top: `${k.y}%`,
-              transform: 'translateX(-50%)',
-              transition: 'left 0.05s linear, top 0.05s linear',
-            }}
+              style={{
+                position: 'absolute',
+                left: `${k.x}%`,
+                top: `${k.y}%`,
+                transform: 'translateX(-50%)',
+              }}
           >
             <svg width="100" height="78" viewBox="0 0 72 56" fill="none">
               <polygon points="36,4 68,28 36,52 4,28" fill={k.color} stroke="#fff" strokeWidth="2" />

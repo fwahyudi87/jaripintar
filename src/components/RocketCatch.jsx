@@ -30,6 +30,18 @@ export default function RocketCatch() {
   const soundFeedback = useSoundFeedback()
   const rocketSpeed = ROCKET_SPEED_MAP[state.level]
 
+  const spawnRocket = useCallback(() => {
+    setRockets((prev) => {
+      if (prev.length >= ROCKET_COUNT) return prev
+      const char = randomChar()
+      const x = 5 + Math.random() * 85
+      const color = ROCKET_COLORS[Math.floor(Math.random() * ROCKET_COLORS.length)]
+      const id = Date.now() + Math.random()
+      const drift = (Math.random() - 0.5) * 0.08
+      return [...prev, { id, char, x, y: 0, color, drift }]
+    })
+  }, [])
+
   const gameOverRef = useRef(false)
   gameOverRef.current = gameOver
   const rocketsRef = useRef(rockets)
