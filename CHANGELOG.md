@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.0 (2026-05-10)
+
+- Modul 5: NameFragment — ketik potongan nama sendiri (substring len 2 → full), 15pts/fragment
+- Modul 6: TRexJump — lompat rintangan huruf/angka dengan T-Rex animasi CSS
+- MenuScreen: 6 modul (grid 3×2), semua terbuka tanpa unlock
+- Dialog waktu habis seragam di semua modul: MAIN LAGI + KEMBALI KE MENU
+
 ## 0.5.0 (2026-05-10)
 
 - PWA: manifest.json, SVG icons, service worker (app shell cache), apple-mobile-web-app meta

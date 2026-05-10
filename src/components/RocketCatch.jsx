@@ -32,18 +32,8 @@ export default function RocketCatch() {
 
   const gameOverRef = useRef(false)
   gameOverRef.current = gameOver
-
-  const spawnRocket = useCallback(() => {
-    setRockets((prev) => {
-      if (prev.length >= ROCKET_COUNT) return prev
-      const char = randomChar()
-      const x = 10 + Math.random() * 60
-      const color = ROCKET_COLORS[Math.floor(Math.random() * ROCKET_COLORS.length)]
-      const id = Date.now() + Math.random()
-      const drift = (Math.random() - 0.5) * 0.15
-      return [...prev, { id, char, x, y: 0, color, drift }]
-    })
-  }, [])
+  const rocketsRef = useRef(rockets)
+  rocketsRef.current = rockets
 
   const handleKey = useCallback((key) => {
     if (gameOverRef.current) return
@@ -51,27 +41,18 @@ export default function RocketCatch() {
     setTimeout(() => setPressedKey(null), 150)
     playSound(key)
 
-    let hit = false
-    setRockets((prev) => {
-      const match = prev.find((r) => r.char === key.toUpperCase())
-      if (match) {
-        hit = true
-        spawnConfetti(match.x, match.y)
-        return prev.filter((r) => r.id !== match.id)
-      }
-      return prev
-    })
-
-    if (hit) {
+    const match = rocketsRef.current.find((r) => r.char === key.toUpperCase())
+    if (match) {
       addScore(20)
+      spawnConfetti(match.x, match.y)
+      setRockets((prev) => prev.filter((r) => r.id !== match.id))
       setFeedback('correct')
       soundFeedback.correct.play()
-      setTimeout(() => setFeedback(null), 300)
     } else {
       setFeedback('wrong')
       soundFeedback.wrong.play()
-      setTimeout(() => setFeedback(null), 300)
     }
+    setTimeout(() => setFeedback(null), 300)
   }, [addScore, playSound])
 
   const spawnConfetti = (x, y) => {
@@ -274,12 +255,12 @@ export default function RocketCatch() {
                 fontFamily: "'Fredoka', sans-serif",
                 fontWeight: 600,
                 color: '#fff',
-                background: 'linear-gradient(135deg, #ff6b6b, #e84393)',
+                background: 'linear-gradient(135deg, #ff8c00, #ff6b35)',
                 borderRadius: 16,
-                boxShadow: '0 4px 16px rgba(255,107,107,0.4)',
+                boxShadow: '0 4px 16px rgba(255,140,0,0.4)',
               }}
             >
-              Main Lagi!
+              MAIN LAGI
             </button>
             <button
               onClick={() => setScreen(SCREEN.MENU)}
@@ -294,7 +275,7 @@ export default function RocketCatch() {
                 border: '2px solid #c0d8e0',
               }}
             >
-              ← Kembali ke Menu
+              KEMBALI KE MENU
             </button>
           </div>
         )}

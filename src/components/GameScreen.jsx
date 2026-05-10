@@ -5,6 +5,8 @@ import LetterHunt from './LetterHunt.jsx'
 import BalloonCatch from './BalloonCatch.jsx'
 import KiteCatch from './KiteCatch.jsx'
 import RocketCatch from './RocketCatch.jsx'
+import NameFragment from './NameFragment.jsx'
+import TRexJump from './TRexJump.jsx'
 
 export default function GameScreen() {
   const { state } = useGame()
@@ -22,6 +24,10 @@ export default function GameScreen() {
       return <KiteCatch />
     case 'rocketCatch':
       return <RocketCatch />
+    case 'nameFragment':
+      return <NameFragment />
+    case 'tRexJump':
+      return <TRexJump />
     default:
       return <SplashScreen />
   }

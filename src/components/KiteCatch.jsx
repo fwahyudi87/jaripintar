@@ -33,6 +33,8 @@ export default function KiteCatch() {
 
   const gameOverRef = useRef(false)
   gameOverRef.current = gameOver
+  const kitesRef = useRef(kites)
+  kitesRef.current = kites
 
   const handleKey = useCallback((key) => {
     if (gameOverRef.current) return
@@ -40,27 +42,18 @@ export default function KiteCatch() {
     setTimeout(() => setPressedKey(null), 150)
     playSound(key)
 
-    let hit = false
-    setKites((prev) => {
-      const match = prev.find((k) => k.number === key)
-      if (match) {
-        hit = true
-        spawnConfetti(match.x, match.y)
-        return prev.filter((k) => k.id !== match.id)
-      }
-      return prev
-    })
-
-    if (hit) {
+    const match = kitesRef.current.find((k) => k.number === key)
+    if (match) {
       addScore(15)
+      spawnConfetti(match.x, match.y)
+      setKites((prev) => prev.filter((k) => k.id !== match.id))
       setFeedback('correct')
       soundFeedback.correct.play()
-      setTimeout(() => setFeedback(null), 300)
     } else {
       setFeedback('wrong')
       soundFeedback.wrong.play()
-      setTimeout(() => setFeedback(null), 300)
     }
+    setTimeout(() => setFeedback(null), 300)
   }, [addScore, playSound])
 
   const spawnConfetti = (x, y) => {
@@ -261,40 +254,6 @@ export default function KiteCatch() {
             }}>
               Skor: {state.score}
             </p>
-            {!state.module4Unlocked && state.score >= 400 && (
-              <button
-                onClick={handleUnlockM4}
-                style={{
-                  padding: '12px 32px',
-                  fontSize: 'clamp(1rem, 2.5vw, 1.4rem)',
-                  fontFamily: "'Fredoka', sans-serif",
-                  fontWeight: 600,
-                  color: '#fff',
-                  background: 'linear-gradient(135deg, #ff6b6b, #e84393)',
-                  borderRadius: 16,
-                  boxShadow: '0 4px 16px rgba(255,107,107,0.4)',
-                }}
-              >
-                🚀 Buka Roket!
-              </button>
-            )}
-            {state.module4Unlocked && (
-              <button
-                onClick={() => setScreen(SCREEN.ROCKET_CATCH)}
-                style={{
-                  padding: '12px 32px',
-                  fontSize: 'clamp(1rem, 2.5vw, 1.4rem)',
-                  fontFamily: "'Fredoka', sans-serif",
-                  fontWeight: 600,
-                  color: '#fff',
-                  background: 'linear-gradient(135deg, #ff6b6b, #e84393)',
-                  borderRadius: 16,
-                  boxShadow: '0 4px 16px rgba(255,107,107,0.4)',
-                }}
-              >
-                🚀 Luncurkan Roket!
-              </button>
-            )}
             <button
               onClick={playAgain}
               style={{
@@ -303,12 +262,12 @@ export default function KiteCatch() {
                 fontFamily: "'Fredoka', sans-serif",
                 fontWeight: 600,
                 color: '#fff',
-                background: 'linear-gradient(135deg, #4ecdc4, #44b09e)',
+                background: 'linear-gradient(135deg, #ff8c00, #ff6b35)',
                 borderRadius: 16,
-                boxShadow: '0 4px 16px rgba(78,205,196,0.4)',
+                boxShadow: '0 4px 16px rgba(255,140,0,0.4)',
               }}
             >
-              Main Lagi!
+              MAIN LAGI
             </button>
             <button
               onClick={() => setScreen(SCREEN.MENU)}
@@ -323,7 +282,7 @@ export default function KiteCatch() {
                 border: '2px solid #c0d8e0',
               }}
             >
-              ← Kembali ke Menu
+              KEMBALI KE MENU
             </button>
           </div>
         )}

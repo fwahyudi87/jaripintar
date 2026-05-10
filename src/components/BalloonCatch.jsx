@@ -33,6 +33,8 @@ export default function BalloonCatch() {
 
   const gameOverRef = useRef(false)
   gameOverRef.current = gameOver
+  const balloonsRef = useRef(balloons)
+  balloonsRef.current = balloons
 
   const handleKey = useCallback((key) => {
     if (gameOverRef.current) return
@@ -40,27 +42,18 @@ export default function BalloonCatch() {
     setTimeout(() => setPressedKey(null), 150)
     playSound(key)
 
-    let hit = false
-    setBalloons((prev) => {
-      const match = prev.find((b) => b.letter === key)
-      if (match) {
-        hit = true
-        spawnConfetti(match.x)
-        return prev.filter((b) => b.id !== match.id)
-      }
-      return prev
-    })
-
-    if (hit) {
+    const match = balloonsRef.current.find((b) => b.letter === key)
+    if (match) {
       addScore(10)
+      spawnConfetti(match.x)
+      setBalloons((prev) => prev.filter((b) => b.id !== match.id))
       setFeedback('correct')
       soundFeedback.correct.play()
-      setTimeout(() => setFeedback(null), 300)
     } else {
       setFeedback('wrong')
       soundFeedback.wrong.play()
-      setTimeout(() => setFeedback(null), 300)
     }
+    setTimeout(() => setFeedback(null), 300)
   }, [addScore, playSound])
 
   const spawnConfetti = (x) => {
@@ -269,40 +262,6 @@ export default function BalloonCatch() {
             }}>
               Skor: {state.score}
             </p>
-            {!state.module3Unlocked && state.score >= 200 && (
-              <button
-                onClick={handleGameOver}
-                style={{
-                  padding: '12px 32px',
-                  fontSize: 'clamp(1rem, 2.5vw, 1.4rem)',
-                  fontFamily: "'Fredoka', sans-serif",
-                  fontWeight: 600,
-                  color: '#fff',
-                  background: 'linear-gradient(135deg, #4ecdc4, #44b09e)',
-                  borderRadius: 16,
-                  boxShadow: '0 4px 16px rgba(78,205,196,0.4)',
-                }}
-              >
-                🪁 Buka Layangan!
-              </button>
-            )}
-            {state.module3Unlocked && (
-              <button
-                onClick={() => setScreen(SCREEN.KITE_CATCH)}
-                style={{
-                  padding: '12px 32px',
-                  fontSize: 'clamp(1rem, 2.5vw, 1.4rem)',
-                  fontFamily: "'Fredoka', sans-serif",
-                  fontWeight: 600,
-                  color: '#fff',
-                  background: 'linear-gradient(135deg, #4ecdc4, #44b09e)',
-                  borderRadius: 16,
-                  boxShadow: '0 4px 16px rgba(78,205,196,0.4)',
-                }}
-              >
-                🪁 Lanjut ke Layangan!
-              </button>
-            )}
             <button
               onClick={playAgain}
               style={{
@@ -316,7 +275,7 @@ export default function BalloonCatch() {
                 boxShadow: '0 4px 16px rgba(255,140,0,0.4)',
               }}
             >
-              Main Lagi!
+              MAIN LAGI
             </button>
             <button
               onClick={() => setScreen(SCREEN.MENU)}
@@ -331,7 +290,7 @@ export default function BalloonCatch() {
                 border: '2px solid #c0d8e0',
               }}
             >
-              ← Kembali ke Menu
+              KEMBALI KE MENU
             </button>
           </div>
         )}

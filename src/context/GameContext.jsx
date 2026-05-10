@@ -1,6 +1,6 @@
 import { createContext, useContext, useReducer, useEffect, useCallback } from 'react'
 
-const SCREEN = { SPLASH: 'splash', MENU: 'menu', LETTER_HUNT: 'letterHunt', BALLOON_CATCH: 'balloonCatch', KITE_CATCH: 'kiteCatch', ROCKET_CATCH: 'rocketCatch' }
+const SCREEN = { SPLASH: 'splash', MENU: 'menu', LETTER_HUNT: 'letterHunt', BALLOON_CATCH: 'balloonCatch', KITE_CATCH: 'kiteCatch', ROCKET_CATCH: 'rocketCatch', NAME_FRAGMENT: 'nameFragment', T_REX_JUMP: 'tRexJump' }
 const STORAGE_KEY = 'jaripintar_session'
 
 const initialState = {
@@ -10,6 +10,8 @@ const initialState = {
   module2Unlocked: false,
   module3Unlocked: false,
   module4Unlocked: false,
+  module5Done: false,
+  module6Unlocked: false,
   name: '',
   gender: 'boy',
   level: 'medium',
@@ -37,6 +39,10 @@ function reducer(state, action) {
       return { ...state, module3Unlocked: true }
     case 'UNLOCK_MODULE4':
       return { ...state, module4Unlocked: true }
+    case 'COMPLETE_MODULE5':
+      return { ...state, module5Done: true, module6Unlocked: true }
+    case 'COMPLETE_MODULE6':
+      return { ...state, module6Unlocked: true }
     case 'START_MODULE2':
       return { ...state, screen: SCREEN.BALLOON_CATCH }
     case 'START_MODULE3':
@@ -66,17 +72,21 @@ export function GameProvider({ children }) {
       module2Unlocked: state.module2Unlocked,
       module3Unlocked: state.module3Unlocked,
       module4Unlocked: state.module4Unlocked,
+      module5Done: state.module5Done,
+      module6Unlocked: state.module6Unlocked,
       name: state.name,
       gender: state.gender,
       level: state.level,
     }))
-  }, [state.score, state.module1Done, state.module2Unlocked, state.module3Unlocked, state.module4Unlocked])
+  }, [state.score, state.module1Done, state.module2Unlocked, state.module3Unlocked, state.module4Unlocked, state.module5Done, state.module6Unlocked])
 
   const startGame = useCallback(() => dispatch({ type: 'START_GAME' }), [])
   const addScore = useCallback((pts) => dispatch({ type: 'ADD_SCORE', payload: pts }), [])
   const completeModule1 = useCallback(() => dispatch({ type: 'COMPLETE_MODULE1' }), [])
   const unlockModule3 = useCallback(() => dispatch({ type: 'UNLOCK_MODULE3' }), [])
   const unlockModule4 = useCallback(() => dispatch({ type: 'UNLOCK_MODULE4' }), [])
+  const completeModule5 = useCallback(() => dispatch({ type: 'COMPLETE_MODULE5' }), [])
+  const completeModule6 = useCallback(() => dispatch({ type: 'COMPLETE_MODULE6' }), [])
   const startModule2 = useCallback(() => dispatch({ type: 'START_MODULE2' }), [])
   const startModule3 = useCallback(() => dispatch({ type: 'START_MODULE3' }), [])
   const startModule4 = useCallback(() => dispatch({ type: 'START_MODULE4' }), [])
@@ -86,7 +96,7 @@ export function GameProvider({ children }) {
   const reset = useCallback(() => dispatch({ type: 'RESET' }), [])
 
   return (
-    <GameContext.Provider value={{ state, startGame, addScore, completeModule1, startModule2, startModule3, startModule4, setScreen, setProfile, setLevel, unlockModule3, unlockModule4, reset, SCREEN }}>
+    <GameContext.Provider value={{ state, startGame, addScore, completeModule1, startModule2, startModule3, startModule4, setScreen, setProfile, setLevel, unlockModule3, unlockModule4, completeModule5, completeModule6, reset, SCREEN }}>
       {children}
     </GameContext.Provider>
   )
