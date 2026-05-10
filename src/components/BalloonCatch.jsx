@@ -149,7 +149,7 @@ export default function BalloonCatch() {
         name={state.name}
         gender={state.gender}
         score={state.score}
-        onBack={() => setScreen(SCREEN.SPLASH)}
+        onBack={() => setScreen(SCREEN.MENU)}
       />
 
       {feedback && (
