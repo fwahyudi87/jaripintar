@@ -56,8 +56,6 @@ export default function SplashScreen() {
         gap: 28,
         padding: 24,
         background: 'linear-gradient(135deg, #f0f8ff 0%, #e8f4f8 100%)',
-        position: 'relative',
-        zIndex: 1,
       }}>
       <h1 style={{
         fontSize: 'clamp(2.5rem, 8vw, 5rem)',
