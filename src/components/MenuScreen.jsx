@@ -45,6 +45,20 @@ const MODULES = [
     desc: 'Huruf & Angka',
     colors: ['#6c5ce7', '#4834d4'],
   },
+  {
+    key: 'MAGIC_CAR_RACE',
+    icon: '🏎️',
+    title: 'Mobil Balap\nHuruf',
+    desc: 'Menelusuri Huruf',
+    colors: ['#e74c3c', '#c0392b'],
+  },
+  {
+    key: 'SPACE_BUBBLE_RESCUE',
+    icon: '👾',
+    title: 'Selamatkan\nAlien',
+    desc: 'Huruf A-Z',
+    colors: ['#a29bfe', '#6c5ce7'],
+  },
 ]
 
 export default function MenuScreen() {
@@ -82,9 +96,9 @@ export default function MenuScreen() {
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr 1fr',
+          gridTemplateColumns: '1fr 1fr 1fr 1fr',
           gap: 16,
-          width: 'min(480px, 100%)',
+          width: 'min(600px, 100%)',
         }}>
           {MODULES.map((mod) => (
             <button

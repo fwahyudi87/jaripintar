@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.4 (2026-05-14)
+
+- Modul 7: MagicCarRace — mobil balap menelusuri bentuk huruf (drag/trace), 5 huruf per sesi
+- Modul 8: SpaceBubbleRescue — selamatkan alien dengan mengetuk gelembung huruf yang benar, voiceover Bahasa Indonesia
+- NameFragment: slicing non-overlapping chunks (ZA-ID-AN, ZAI-DAN, ZAID-AN...)
+- TRexJump: kata cocok → rintangan hilang, tidak cocok sampai kena T-Rex → skor -5
+- OnScreenKeyboard terintegrasi di SpaceBubbleRescue
+- MenuScreen: grid 4 kolom, lebar tombol diperbesar
+
 ## 0.6.3 (2026-05-10)
 
 - Back button routing: all game modules → MenuScreen, MenuScreen → SplashScreen

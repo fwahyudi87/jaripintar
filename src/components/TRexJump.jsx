@@ -12,6 +12,7 @@ const OBSTACLE_SPEED_MAP = { easy: 0.25, medium: 0.4, hard: 0.6 }
 const OBSTACLE_COUNT = 4
 const GAME_DURATION = 45000
 const TREX_X = 14
+const COLLISION_X = 16
 
 function randomChar() {
   return CHARS[Math.floor(Math.random() * CHARS.length)]
@@ -42,6 +43,15 @@ export default function TRexJump() {
   const trexStateRef = useRef(trexState)
   trexStateRef.current = trexState
 
+  const [penaltyCount, setPenaltyCount] = useState(0)
+
+  useEffect(() => {
+    if (penaltyCount > 0) {
+      addScore(-5 * penaltyCount)
+      setPenaltyCount(0)
+    }
+  }, [penaltyCount, addScore])
+
   const obstacleSpeed = OBSTACLE_SPEED_MAP[state.level] || 0.4
   const spawnInterval = SPAWN_INTERVAL_MAP[state.level] || 2600
 
@@ -71,10 +81,8 @@ export default function TRexJump() {
     if (upper === expected) {
       const nextTyped = target.typedIndex + 1
       const cleared = nextTyped >= target.chars.length
-      setObstacles((prev) => prev.map((o, i) =>
-        i === nearestIdx ? { ...o, typedIndex: nextTyped } : o
-      ))
       if (cleared) {
+        setObstacles((prev) => prev.filter((o, i) => i !== nearestIdx))
         addScore(15)
         setObstaclesCleared((c) => c + 1)
         setTrexState('jumping')
@@ -83,6 +91,9 @@ export default function TRexJump() {
         soundFeedback.correct.play()
         setTimeout(() => setFeedback(null), 300)
       } else {
+        setObstacles((prev) => prev.map((o, i) =>
+          i === nearestIdx ? { ...o, typedIndex: nextTyped } : o
+        ))
         setTrexState('jumping')
         setTimeout(() => setTrexState('running'), 250)
         setFeedback('correct')
@@ -132,10 +143,20 @@ export default function TRexJump() {
 
   useGameLoop(() => {
     setObstacles((prev) => {
-      const next = prev.map((o) => ({
-        ...o,
-        x: o.x - obstacleSpeed,
-      })).filter((o) => o.x > -15)
+      let penalties = 0
+      const moved = prev.map((o) => ({ ...o, x: o.x - obstacleSpeed }))
+      const next = moved.filter((o) => {
+        if (o.x < COLLISION_X) {
+          if (o.typedIndex < o.chars.length) {
+            penalties++
+          }
+          return false
+        }
+        return o.x > -15
+      })
+      if (penalties > 0) {
+        setPenaltyCount((prev) => prev + penalties)
+      }
       return next
     })
   }, !gameOver)

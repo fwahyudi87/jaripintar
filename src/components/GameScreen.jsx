@@ -7,6 +7,8 @@ import KiteCatch from './KiteCatch.jsx'
 import RocketCatch from './RocketCatch.jsx'
 import NameFragment from './NameFragment.jsx'
 import TRexJump from './TRexJump.jsx'
+import MagicCarRace from './MagicCarRace.jsx'
+import SpaceBubbleRescue from './SpaceBubbleRescue.jsx'
 
 export default function GameScreen() {
   const { state } = useGame()
@@ -28,6 +30,10 @@ export default function GameScreen() {
       return <NameFragment />
     case 'tRexJump':
       return <TRexJump />
+    case 'magicCarRace':
+      return <MagicCarRace />
+    case 'spaceBubbleRescue':
+      return <SpaceBubbleRescue />
     default:
       return <SplashScreen />
   }

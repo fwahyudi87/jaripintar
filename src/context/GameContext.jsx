@@ -1,6 +1,6 @@
 import { createContext, useContext, useReducer, useEffect, useCallback } from 'react'
 
-const SCREEN = { SPLASH: 'splash', MENU: 'menu', LETTER_HUNT: 'letterHunt', BALLOON_CATCH: 'balloonCatch', KITE_CATCH: 'kiteCatch', ROCKET_CATCH: 'rocketCatch', NAME_FRAGMENT: 'nameFragment', T_REX_JUMP: 'tRexJump' }
+const SCREEN = { SPLASH: 'splash', MENU: 'menu', LETTER_HUNT: 'letterHunt', BALLOON_CATCH: 'balloonCatch', KITE_CATCH: 'kiteCatch', ROCKET_CATCH: 'rocketCatch', NAME_FRAGMENT: 'nameFragment', T_REX_JUMP: 'tRexJump', MAGIC_CAR_RACE: 'magicCarRace', SPACE_BUBBLE_RESCUE: 'spaceBubbleRescue' }
 const STORAGE_KEY = 'jaripintar_session'
 
 const initialState = {
@@ -12,6 +12,7 @@ const initialState = {
   module4Unlocked: false,
   module5Done: false,
   module6Unlocked: false,
+  module7Unlocked: false,
   name: '',
   gender: 'boy',
   level: 'medium',
@@ -42,7 +43,7 @@ function reducer(state, action) {
     case 'COMPLETE_MODULE5':
       return { ...state, module5Done: true, module6Unlocked: true }
     case 'COMPLETE_MODULE6':
-      return { ...state, module6Unlocked: true }
+      return { ...state, module6Unlocked: true, module7Unlocked: true }
     case 'START_MODULE2':
       return { ...state, screen: SCREEN.BALLOON_CATCH }
     case 'START_MODULE3':
@@ -74,11 +75,12 @@ export function GameProvider({ children }) {
       module4Unlocked: state.module4Unlocked,
       module5Done: state.module5Done,
       module6Unlocked: state.module6Unlocked,
+      module7Unlocked: state.module7Unlocked,
       name: state.name,
       gender: state.gender,
       level: state.level,
     }))
-  }, [state.score, state.module1Done, state.module2Unlocked, state.module3Unlocked, state.module4Unlocked, state.module5Done, state.module6Unlocked])
+  }, [state.score, state.module1Done, state.module2Unlocked, state.module3Unlocked, state.module4Unlocked, state.module5Done, state.module6Unlocked, state.module7Unlocked])
 
   const startGame = useCallback(() => dispatch({ type: 'START_GAME' }), [])
   const addScore = useCallback((pts) => dispatch({ type: 'ADD_SCORE', payload: pts }), [])

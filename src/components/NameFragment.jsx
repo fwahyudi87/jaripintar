@@ -9,12 +9,12 @@ function generateFragments(name) {
   const upper = name.toUpperCase()
   const fragments = []
   for (let len = 2; len <= upper.length; len++) {
-    for (let i = 0; i + len <= upper.length; i++) {
+    for (let i = 0; i < upper.length; i += len) {
       fragments.push(upper.slice(i, i + len))
     }
   }
-return fragments
-  }
+  return fragments
+}
 
 export default function NameFragment() {
   const { state, addScore, completeModule5, setScreen, SCREEN } = useGame()
